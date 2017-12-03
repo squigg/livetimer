@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from "./shared/shared.module";
-import { RequestOptions } from "@angular/http";
-import { DefaultRequestOptions } from "./shared/configuration/default-request-options";
+import { TimerModule } from "./features/timer/timer.module";
+import { ServicesModule } from "./services/services.module";
 
 @NgModule({
     declarations: [
@@ -13,10 +13,10 @@ import { DefaultRequestOptions } from "./shared/configuration/default-request-op
     imports: [
         BrowserModule,
         SharedModule,
+        TimerModule,
+        ServicesModule,
     ],
-    providers: [
-        {provide: RequestOptions, useClass: DefaultRequestOptions}
-    ],
+    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule {

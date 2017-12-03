@@ -1,3 +1,6 @@
+import * as moment from "moment";
+import { Moment } from "moment";
+
 export enum TimerStatus {
     Paused = "paused",
     Stopped = "stopped",
@@ -7,15 +10,18 @@ export enum TimerStatus {
 
 export class Timer {
 
-    public created: Date;
-    public currentTime: number;
+    public now: Moment;
+    public finishAt: Moment;
+    public startedAt: Moment;
 
     constructor(public id: string,
                 public name: string,
-                public time: number,
+                public duration: number,
+                public remaining: number,
                 public status: TimerStatus) {
-        this.created = new Date();
-        this.currentTime = this.time;
+        this.now = moment();
+        this.startedAt = moment();
+        this.finishAt = moment().add(duration, 'seconds');
     }
 
     // toJSON is automatically used by JSON.stringify
@@ -23,7 +29,9 @@ export class Timer {
         // copy all fields from `this` to an empty object and return in
         return Object.assign({}, this, {
             // convert fields that need converting
-            created: this.created.toString()
+            now: this.now.toString(),
+            finishAt: this.finishAt.toString(),
+            startedAt: this.startedAt.toString()
         });
     }
 
@@ -39,8 +47,10 @@ export class Timer {
             // copy all the fields from the json object
             return Object.assign(timer, json, {
                 // convert fields that need converting
-                created: new Date(json.created),
-            });
+                now: moment(json.now),
+                finishAt: moment(json.finishAt),
+                startedAt: moment(json.startedAt)
+            })
         }
     }
 
@@ -56,7 +66,9 @@ export class Timer {
 export interface TimerJSON {
     id: string;
     name: string;
-    time: number;
+    duration: number;
+    finishAt: string;
+    startedAt: string;
+    now: string;
     status: TimerStatus;
-    created: string;
 }

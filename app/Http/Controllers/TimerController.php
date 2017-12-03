@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Timer;
 
 class TimerController extends Controller
 {
 
-    //
+    public function index()
+    {
+        //        $timers = Auth::user()->timers;
+        $timers = Timer::all();;
+        return view('index')->with('timers', $timers);
+    }
 }

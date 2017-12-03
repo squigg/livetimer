@@ -5,6 +5,6 @@
 
 export const environment = {
     production: false,
-    base_api_url: 'http://dev.livetimer.co.uk/api',
+    base_api_url: 'http://dev.livetimer.squigg.co.uk/api',
     pusher_key: 'ffc8403a2e5fbd7e0cfc',
 };
