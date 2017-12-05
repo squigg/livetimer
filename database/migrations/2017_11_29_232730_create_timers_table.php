@@ -18,9 +18,12 @@ class CreateTimersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->uuid('uuid');
+            $table->string('name');
             $table->string('status');
             $table->integer('duration');
             $table->integer('remaining');
+            $table->timestamp('finish_at', 3)->nullable();
+            $table->timestamp('started_at', 3)->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });

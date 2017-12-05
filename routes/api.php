@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::namespace('Api')->middleware('auth:api')->group(function () {
+//Route::namespace('Api')->middleware('auth:api')->group(function () {
+Route::namespace('Api')->group(function () {
 
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -21,16 +22,18 @@ Route::namespace('Api')->middleware('auth:api')->group(function () {
 
     // TIMERS
 
+    // Authenticated Routes
     Route::get('/timers', 'ApiTimerController@index');
-    Route::get('/timers/{id}', 'ApiTimerController@view');
     Route::post('/timers', 'ApiTimerController@create');
-    Route::put('/timers/{id}', 'ApiTimerController@update');
-    Route::post('/timers/{id}/set/{duration}', 'ApiTimerController@setTime');
-    Route::post('/timers/{id}/start', 'ApiTimerController@start');
-    Route::post('/timers/{id}/restart', 'ApiTimerController@restart');
-    Route::post('/timers/{id}/reset', 'ApiTimerController@reset');
-    Route::post('/timers/{id}/pause', 'ApiTimerController@pause');
-    Route::delete('/timers/{id}', 'ApiTimerController@delete');
+
+    Route::get('/timers/{timer}', 'ApiTimerController@view');
+    Route::put('/timers/{timer}', 'ApiTimerController@update');
+    Route::post('/timers/{timer}/start', 'ApiTimerController@start');
+    Route::post('/timers/{timer}/restart', 'ApiTimerController@start');
+    Route::post('/timers/{timer}/reset', 'ApiTimerController@reset');
+    Route::post('/timers/{timer}/pause', 'ApiTimerController@pause');
+    Route::post('/timers/{timer}/resume', 'ApiTimerController@resume');
+    Route::delete('/timers/{timer}', 'ApiTimerController@delete');
 
 });
 
