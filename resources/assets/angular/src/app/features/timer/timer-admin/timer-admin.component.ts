@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { TimerHttpService } from "../../../services/timer-http.service";
+import { Timer } from "../../../models/timer";
+import { ActivatedRoute, Params } from "@angular/router";
+import { TimerService } from "../../../services/timer.service";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
     selector: 'app-timeradmin',
@@ -7,10 +12,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TimerAdminComponent implements OnInit {
 
-    constructor() {
+    protected timer: Timer;
+    protected subscription: Subscription;
+    protected timerService: TimerService;
+    protected timerHttpService: TimerHttpService;
+
+    constructor(private route: ActivatedRoute, timerService: TimerService, timerHttpService: TimerHttpService) {
+        this.timerService = timerService;
+        this.timerHttpService = timerHttpService;
+        this.route.params.subscribe((value: Params) => this.getTimer(value['id']));
     }
 
     ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
+    async getTimer(id: string): Promise<void> {
+        let timer = await this.timerService.connect(id);
+        this.subscription = timer.subscribe((timer: Timer) => this.timer = timer);
+    }
+
+    pause() {
+        this.timerHttpService.pause(this.timer.id, this.timer.remaining);
+    }
+
+    resume() {
+        this.timerHttpService.resume(this.timer.id);
+    }
+
+    start() {
+        this.timerHttpService.start(this.timer.id);
+    }
+
+    reset() {
+        this.timerHttpService.reset(this.timer.id);
     }
 
 }

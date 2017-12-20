@@ -1,3 +1,9 @@
-<p>
-  timeradmin works!
-</p>
+<div *ngIf="!timer">Loading...</div>
+<div *ngIf="timer">
+  <app-clock [time]="timer.remaining"></app-clock>
+  {{ timer.status }}
+  <button type="button" (click)="pause()">Pause</button>
+  <button type="button" (click)="resume()">Resume</button>
+  <button type="button" (click)="start()">Start</button>
+  <button type="button" (click)="reset()">Reset</button>
+</div>

@@ -27,6 +27,7 @@ class Timer extends Model
 
     protected $fillable = ['name', 'duration'];
     protected $hidden = ['uuid'];
+    protected $dates = ['finish_at', 'started_at'];
 
     public function user()
     {

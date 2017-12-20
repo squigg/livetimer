@@ -1,40 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Timer } from "../models/timer";
+import { Timer, TimerStatus } from "../models/timer";
 import { TimerHttpService } from "./timer-http.service";
 import { BehaviorSubject, Observable } from "rxjs/Rx";
+import 'rxjs/add/observable/interval';
 import * as moment from "moment";
+import { IntervalObservable } from "rxjs/observable/IntervalObservable";
+
 
 @Injectable()
 export class TimerService {
 
     private offsetMilliseconds: number;
     private timerHttp: TimerHttpService;
-    private timerSubjects = new Map<string, BehaviorSubject<Timer>>();
+    private timers = new Map<string, Observable<Timer>>();
 
     constructor(timerHttp: TimerHttpService) {
         this.timerHttp = timerHttp;
     }
 
     public async connect(id: string): Promise<Observable<Timer>> {
-        let timerSubject = await this.timerHttp.connect(id);
-        this.setHooks(timerSubject);
-        this.timerSubjects.set(id, timerSubject);
-        return timerSubject.asObservable();
+        let timerObservable = await this.timerHttp.connect(id);
+        return timerObservable
+            .switchMap((val) => new IntervalObservable(1000).mapTo(val))
+            .map((val) => val.status === TimerStatus.Started ? Object.assign(val, {remaining: Math.max(val.remaining - 1, 0)}) : val)
+            .distinctUntilChanged();
     }
 
-    private setHooks(timerObservable: Observable<Timer>) {
-        return timerObservable.subscribe(
-            (timer) => {
-                this.handleTimerChange(timer)
-            });
-    }
 
-    private handleTimerChange(timer: Timer) {
-        const timerSubject = this.timerSubjects.get(timer.id);
-        this.offsetMilliseconds = timer.now.diff(moment(), 'milliseconds');
 
-        // Do stuff with timer in here????
-
-        timerSubject.next(timer);
-    }
 }

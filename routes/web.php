@@ -11,4 +11,9 @@
 |
 */
 
-Route::get('/', 'TimerController@index');
+Route::get('/', function () {
+    return view('home');
+});
+Route::any('{catchall}', function () {
+    return view('home');
+})->where('catchall', '(.*)');

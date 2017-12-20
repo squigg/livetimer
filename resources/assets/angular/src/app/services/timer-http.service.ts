@@ -30,16 +30,16 @@ export class TimerHttpService {
         });
     }
 
-    public async connect(id: string): Promise<BehaviorSubject<Timer>> {
+    public async connect(id: string): Promise<Observable<Timer>> {
 
         if (!this.timerExists(id)) {
             await this.fetchTimer(id);
         }
 
-        this.echo.private('App.Timer.' + id)
-            .listen('TimerUpdated', this.timerUpdated);
+        this.echo.channel('App.Timer.' + id)
+            .listen('TimerUpdated', (data) => this.timerUpdated(data.timer));
 
-        return this.getTimerSubject(id);
+        return this.getTimerSubject(id).asObservable();
     }
 
     public disconnect(id: string): void {
@@ -112,8 +112,12 @@ export class TimerHttpService {
         return this.action(id, 'reset');
     }
 
-    public pause(id: string) {
-        return this.action(id, 'pause');
+    public resume(id: string) {
+        return this.action(id, 'resume');
+    }
+
+    public pause(id: string, remaining: number) {
+        return this.convertJsonTimer(this.http.post<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id + '/pause', {remaining: remaining}, {observe: 'response'}));
     }
 
     private convertJsonTimer(objectObservable: Observable<Object>): Promise<Timer> {

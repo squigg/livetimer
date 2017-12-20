@@ -4,13 +4,13 @@ import { PageNotFoundComponent } from "./error/page-not-found/page-not-found.com
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
     ],
     exports: [
-        PageNotFoundComponent
+        PageNotFoundComponent,
     ],
     declarations: [
-        PageNotFoundComponent
+        PageNotFoundComponent,
     ]
 })
 export class SharedModule {
