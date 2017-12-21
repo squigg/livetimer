@@ -1,4 +1,4 @@
-<div class="m-clock">
+<div class="m-clock" [ngClass]="{'-paused': paused}">
   <span *ngIf="showHours" class="a-clock_hoursValue">{{hours | number:'2.0-0'}}</span>
   <span *ngIf="showHours" class="a-clock_hoursDivider">:</span>
   <span class="a-clock_minutesValue">{{minutes | number:'2.0-0'}}</span>

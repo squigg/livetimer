@@ -81,7 +81,7 @@ export class TimerHttpService {
     }
 
     public update(id: string, timer: Timer) {
-        return this.convertJsonTimer(this.http.put<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id, JSON.stringify(timer), {observe: 'response'}));
+        return this.convertJsonTimer(this.http.put<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id, timer, {observe: 'response'}));
     }
 
     public delete(id: string) {
@@ -96,8 +96,8 @@ export class TimerHttpService {
         return this.convertJsonTimer(this.http.put<TimerJSON>(AppSettings.API_ROOT + '/timers', {name: name}, {observe: 'response'}));
     }
 
-    private action(id: string, action: string) {
-        return this.convertJsonTimer(this.http.post<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id + '/' + action, null, {observe: 'response'}));
+    private action(id: string, action: string, body?: Object) {
+        return this.convertJsonTimer(this.http.post<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id + '/' + action, body, {observe: 'response'}));
     }
 
     public start(id: string) {
@@ -116,8 +116,12 @@ export class TimerHttpService {
         return this.action(id, 'resume');
     }
 
+    public stop(id: string, remaining: number) {
+        return this.action(id, 'stop', {remaining: remaining});
+    }
+
     public pause(id: string, remaining: number) {
-        return this.convertJsonTimer(this.http.post<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id + '/pause', {remaining: remaining}, {observe: 'response'}));
+        return this.action(id, 'pause', {remaining: remaining});
     }
 
     private convertJsonTimer(objectObservable: Observable<Object>): Promise<Timer> {

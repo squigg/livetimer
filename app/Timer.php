@@ -24,6 +24,7 @@ class Timer extends Model
     const STATUS_STARTED = 'started';
     const STATUS_STOPPED = 'stopped';
     const STATUS_PAUSED = 'paused';
+    const STATUS_COMPLETE = 'complete';
 
     protected $fillable = ['name', 'duration'];
     protected $hidden = ['uuid'];

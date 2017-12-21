@@ -23,16 +23,26 @@ class ApiTimerController extends Controller
 
     public function view(Timer $timer)
     {
+        if ($timer->status === Timer::STATUS_STARTED && $timer->finish_at->lt(Carbon::now())) {
+            return $this->complete($timer);
+        }
+        if ($timer->status === Timer::STATUS_STARTED) {
+            $timer->remaining = $timer->finish_at->diffInSeconds();
+        }
         return new TimerResponse($timer);
     }
 
     public function update(Timer $timer, Request $request)
     {
+        $duration = $timer->duration;
         $validatedData = $request->validate([
             'name'     => 'sometimes|required|string',
             'duration' => 'sometimes|required|numeric',
         ]);
         $timer->fill($validatedData);
+        if ($timer->duration !== $duration) {
+            return $this->reset($timer);
+        }
         $timer->save();
         return new TimerResponse($timer);
     }
@@ -53,6 +63,28 @@ class ApiTimerController extends Controller
         $timer->remaining = $timer->duration;
         $timer->started_at = null;
         $timer->finish_at = null;
+        $timer->save();
+        return new TimerResponse($timer);
+    }
+
+    public function complete(Timer $timer)
+    {
+        $timer->status = Timer::STATUS_COMPLETE;
+        $timer->remaining = 0;
+        $timer->started_at = null;
+        $timer->finish_at = null;
+        $timer->save();
+        return new TimerResponse($timer);
+    }
+
+    public function stop(Timer $timer, Request $request)
+    {
+        $validatedData = $request->validate([
+            'remaining' => 'required|numeric|max:' . $timer->duration
+        ]);
+        $timer->status = Timer::STATUS_STOPPED;
+        $timer->finish_at = null;
+        $timer->remaining = $validatedData['remaining'];
         $timer->save();
         return new TimerResponse($timer);
     }

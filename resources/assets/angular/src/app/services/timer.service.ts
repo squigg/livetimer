@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Timer, TimerStatus } from "../models/timer";
 import { TimerHttpService } from "./timer-http.service";
-import { BehaviorSubject, Observable } from "rxjs/Rx";
+import { Observable } from "rxjs/Rx";
 import 'rxjs/add/observable/interval';
-import * as moment from "moment";
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
 
 
@@ -22,10 +21,17 @@ export class TimerService {
         let timerObservable = await this.timerHttp.connect(id);
         return timerObservable
             .switchMap((val) => new IntervalObservable(1000).mapTo(val))
-            .map((val) => val.status === TimerStatus.Started ? Object.assign(val, {remaining: Math.max(val.remaining - 1, 0)}) : val)
+            .map(this.handleTick)
             .distinctUntilChanged();
     }
 
-
+    handleTick(timer: Timer): Timer {
+        if (timer.status === TimerStatus.Started) {
+            let remaining = Math.max(timer.remaining - 1, 0);
+            let status = remaining === 0 ? TimerStatus.Complete : TimerStatus.Started;
+            return Object.assign(timer, {remaining: remaining, status: status})
+        }
+        return timer;
+    }
 
 }

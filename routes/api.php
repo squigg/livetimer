@@ -29,6 +29,7 @@ Route::namespace('Api')->group(function () {
     Route::get('/timers/{timer}', 'ApiTimerController@view');
     Route::put('/timers/{timer}', 'ApiTimerController@update');
     Route::post('/timers/{timer}/start', 'ApiTimerController@start');
+    Route::post('/timers/{timer}/stop', 'ApiTimerController@stop');
     Route::post('/timers/{timer}/restart', 'ApiTimerController@start');
     Route::post('/timers/{timer}/reset', 'ApiTimerController@reset');
     Route::post('/timers/{timer}/pause', 'ApiTimerController@pause');

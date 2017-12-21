@@ -1,0 +1,26 @@
+@keyframes pausedPulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.3;
+  }
+}
+
+.m-clock {
+
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+  font-size: 15vw;
+
+  &.-noHours {
+    font-size: 20vw;
+  }
+
+  &.-paused {
+    animation: pausedPulse 1s ease-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    opacity: 1;
+  }
+
+}
