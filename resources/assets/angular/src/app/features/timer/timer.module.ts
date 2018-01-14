@@ -5,8 +5,6 @@ import { FormsModule } from "@angular/forms";
 import { SharedModule } from "../../shared/shared.module";
 
 import { ClockComponent } from './clock/clock.component';
-import { TimerShowComponent } from './timer-show/timer-show.component';
-import { TimerListComponent } from "./timer-list/timer-list.component";
 import { TimerAdminComponent } from "./timer-admin/timer-admin.component";
 import { TimerDisplayComponent } from "./timer-display/timer-display.component";
 
@@ -14,19 +12,17 @@ import { TimerDisplayComponent } from "./timer-display/timer-display.component";
     imports: [
         CommonModule,
         SharedModule,
-        FormsModule
+        FormsModule,
     ],
     exports: [
-        TimerShowComponent,
-        TimerListComponent,
-        TimerAdminComponent,
-    ],
-    declarations: [
-        TimerShowComponent,
-        TimerListComponent,
         TimerAdminComponent,
         TimerDisplayComponent,
-        ClockComponent]
+    ],
+    declarations: [
+        TimerAdminComponent,
+        TimerDisplayComponent,
+        ClockComponent,
+    ]
 })
 export class TimerModule {
 }

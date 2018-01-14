@@ -1,17 +1,14 @@
-<div *ngIf="!timer">Loading...</div>
-<div *ngIf="timer">
-  <app-timerdisplay [timer]="timer"></app-timerdisplay>
-  <div>{{ timer.status }}</div>
-  <div>
-    <button *ngIf="showPause()" type="button" (click)="pause()">Pause</button>
-    <button *ngIf="showStop()" type="button" (click)="stop()">Stop</button>
-    <button *ngIf="showResume()" type="button" (click)="resume()">Resume</button>
-    <button *ngIf="showStart()" type="button" (click)="start()">Start</button>
-    <button *ngIf="!isInitial()" type="button" (click)="start()">Restart</button>
-    <button *ngIf="!isInitial()" type="button" (click)="reset()">Reset</button>
-  </div>
-  <div>
-    <input type="number" size="4" min="1" step="1" name="duration" [(ngModel)]="duration"> Seconds
-    <button type="button" (click)="setDuration()">Set Time</button>
-  </div>
+<app-timer-display [timer]="timer"></app-timer-display>
+<div>{{ timer.status }}</div>
+<div>
+  <button *ngIf="showPause()" type="button" (click)="pause()">Pause</button>
+  <button *ngIf="showStop()" type="button" (click)="stop()">Stop</button>
+  <button *ngIf="showResume()" type="button" (click)="resume()">Resume</button>
+  <button *ngIf="showStart()" type="button" (click)="start()">Start</button>
+  <button *ngIf="!isInitial()" type="button" (click)="start()">Restart</button>
+  <button *ngIf="!isInitial()" type="button" (click)="reset()">Reset</button>
+</div>
+<div>
+  <input type="number" size="4" min="1" step="1" name="duration" [(ngModel)]="duration"> Seconds
+  <button type="button" (click)="setDuration()">Set Time</button>
 </div>

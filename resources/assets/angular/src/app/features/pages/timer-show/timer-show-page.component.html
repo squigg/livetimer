@@ -1,0 +1,6 @@
+<div *ngIf="timer">
+  <app-timer-display [timer]="timer"></app-timer-display>
+  <a routerLink="/timer/{{ timer.id }}/admin">
+    <app-square-icon-button appHideOnInactive [icon]="'cog'"></app-square-icon-button>
+  </a>
+</div>

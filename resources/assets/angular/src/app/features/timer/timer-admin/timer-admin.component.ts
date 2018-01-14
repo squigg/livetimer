@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TimerHttpService } from "../../../services/timer-http.service";
 import { Timer, TimerStatus } from "../../../models/timer";
 import { ActivatedRoute, Params } from "@angular/router";
@@ -6,13 +6,13 @@ import { TimerService } from "../../../services/timer.service";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
-    selector: 'app-timeradmin',
+    selector: 'app-timer-admin',
     templateUrl: './timer-admin.component.html',
-    styleUrls: ['./timer-admin.component.css']
+    styleUrls: ['./timer-admin.component.scss']
 })
 export class TimerAdminComponent implements OnInit {
 
-    protected timer: Timer;
+    @Input() timer: Timer;
     protected subscription: Subscription;
     protected timerService: TimerService;
     protected timerHttpService: TimerHttpService;

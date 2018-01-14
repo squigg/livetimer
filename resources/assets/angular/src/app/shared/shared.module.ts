@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PageNotFoundComponent } from "./error/page-not-found/page-not-found.component";
+import { SquareIconButtonComponent } from "./components/square-icon-button/square-icon-button.component";
+import { HideOnInactiveDirective } from './directives/hide-on-inactive.directive';
 
 @NgModule({
     imports: [
         CommonModule,
     ],
     exports: [
-        PageNotFoundComponent,
+        SquareIconButtonComponent,
+        HideOnInactiveDirective,
     ],
     declarations: [
-        PageNotFoundComponent,
+        SquareIconButtonComponent,
+        HideOnInactiveDirective,
     ]
 })
 export class SharedModule {

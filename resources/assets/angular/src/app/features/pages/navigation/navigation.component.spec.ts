@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimerShowComponent } from './timer-show.component';
+import { NavigationComponent } from './navigation.component';
 
-describe('TimerShowComponent', () => {
-    let component: TimerShowComponent;
-    let fixture: ComponentFixture<TimerShowComponent>;
+describe('NavigationComponent', () => {
+    let component: NavigationComponent;
+    let fixture: ComponentFixture<NavigationComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [TimerShowComponent]
+            declarations: [NavigationComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(TimerShowComponent);
+        fixture = TestBed.createComponent(NavigationComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

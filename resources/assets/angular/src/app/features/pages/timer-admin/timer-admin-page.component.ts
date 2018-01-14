@@ -5,11 +5,11 @@ import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
-    selector: 'app-timershow',
-    templateUrl: './timer-show.component.html',
-    styleUrls: ['./timer-show.component.css']
+    selector: 'app-page-timer-admin',
+    templateUrl: './timer-admin-page.component.html',
+    styleUrls: ['./timer-admin-page.component.scss']
 })
-export class TimerShowComponent implements OnInit {
+export class TimerAdminPageComponent implements OnInit {
 
     protected timer: Timer;
     protected timerService: TimerService;

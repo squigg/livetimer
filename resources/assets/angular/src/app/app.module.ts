@@ -5,16 +5,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { SharedModule } from "./shared/shared.module";
 import { TimerModule } from "./features/timer/timer.module";
+import { PagesModule } from "./features/pages/pages.module";
 import { ServicesModule } from "./services/services.module";
-import { TimerShowComponent } from "./features/timer/timer-show/timer-show.component";
-import { TimerListComponent } from "./features/timer/timer-list/timer-list.component";
-import { TimerAdminComponent } from "./features/timer/timer-admin/timer-admin.component";
-import { PageNotFoundComponent } from "./shared/error/page-not-found/page-not-found.component";
+
+import { TimerShowPageComponent } from "./features/pages/timer-show/timer-show-page.component";
+import { TimerListPageComponent } from "./features/pages/timer-list/timer-list-page.component";
+import { TimerAdminPageComponent } from "./features/pages/timer-admin/timer-admin-page.component";
+import { PageNotFoundComponent } from "./features/pages/page-not-found/page-not-found.component";
 
 const appRoutes: Routes = [
-    {path: 'timers', component: TimerListComponent},
-    {path: 'timer/:id/admin', component: TimerAdminComponent},
-    {path: 'timer/:id', component: TimerShowComponent},
+    {path: 'timers', component: TimerListPageComponent},
+    {path: 'timer/:id/admin', component: TimerAdminPageComponent},
+    {path: 'timer/:id', component: TimerShowPageComponent},
     {path: '**', component: PageNotFoundComponent}
 ];
 
@@ -25,11 +27,12 @@ const appRoutes: Routes = [
     imports: [
         RouterModule.forRoot(
             appRoutes,
-            {enableTracing: true} // <-- debugging purposes only
+            //{enableTracing: true} // <-- debugging purposes only
         ),
         BrowserModule,
         SharedModule,
         TimerModule,
+        PagesModule,
         ServicesModule,
     ],
     providers: [],
