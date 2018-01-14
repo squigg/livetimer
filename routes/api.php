@@ -36,8 +36,14 @@ Route::namespace('Api')->group(function () {
     Route::post('/timers/{timer}/resume', 'ApiTimerController@resume');
     Route::delete('/timers/{timer}', 'ApiTimerController@delete');
 
+    // TRIGGERS
+
+    // Authenticated Routes
+    Route::get('/timers/{timer}/triggers', 'ApiTriggerController@index');
+    Route::post('/timers/{timer}/triggers', 'ApiTriggerController@create');
+
+    Route::get('/triggers/{trigger}', 'ApiTriggerController@view');
+    Route::put('/triggers/{trigger}', 'ApiTriggerController@update');
+    Route::delete('/triggers/{trigger}', 'ApiTriggerController@delete');
+
 });
-
-
-
-

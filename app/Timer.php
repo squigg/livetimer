@@ -5,6 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use Emadadly\LaravelUuid\Uuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * @property string name
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon started_at
  * @property string uuid
  * @property int id
+ * @property Collection triggers
  */
 class Timer extends Model
 {
@@ -38,6 +40,11 @@ class Timer extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public function triggers()
+    {
+        return $this->hasMany(Trigger::class);
     }
 
 }

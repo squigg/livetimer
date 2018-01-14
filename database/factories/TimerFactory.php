@@ -1,5 +1,6 @@
 <?php
 
+use App\Timer;
 use Faker\Generator as Faker;
 
 /*
@@ -13,13 +14,12 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
-    static $password;
-
+$factory->define(App\Timer::class, function (Faker $faker) {
     return [
-        'name'           => $faker->name,
-        'email'          => $faker->unique()->safeEmail,
-        'password'       => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'name'      => $faker->name,
+        'status'    => Timer::STATUS_STOPPED,
+        'duration'  => 300,
+        'remaining' => 300,
+        'user_id'   => 1,
     ];
 });
