@@ -33,7 +33,7 @@ class Trigger extends Model
 
     public function timer()
     {
-        return $this->hasOne(Timer::class);
+        return $this->belongsTo(Timer::class);
     }
 
     public function getRouteKeyName()
