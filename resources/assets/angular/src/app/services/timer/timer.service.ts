@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Timer, TimerStatus } from "../models/timer";
+import { Timer, TimerStatus } from "../../models/timer";
 import { TimerHttpService } from "./timer-http.service";
 import { Observable } from "rxjs/Rx";
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";

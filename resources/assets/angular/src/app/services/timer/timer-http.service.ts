@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from "@angular/common/http";
-import { AppSettings } from "../../config/appsettings.class";
-import { Timer, TimerJSON } from "../models/timer";
+import { AppSettings } from "../../../config/appsettings.class";
+import { Timer, TimerJSON } from "../../models/timer";
 import { Observable } from "rxjs/Rx";
 
-import { PusherService } from "./pusher.service";
+import { PusherService } from "../pusher.service";
 
 @Injectable()
 export class TimerHttpService {

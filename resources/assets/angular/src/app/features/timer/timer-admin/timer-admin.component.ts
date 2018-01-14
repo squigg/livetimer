@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TimerHttpService } from "../../../services/timer-http.service";
+import { TimerHttpService } from "../../../services/timer/timer-http.service";
 import { Timer, TimerStatus } from "../../../models/timer";
 import { ActivatedRoute, Params } from "@angular/router";
-import { TimerService } from "../../../services/timer.service";
+import { TimerService } from "../../../services/timer/timer.service";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({

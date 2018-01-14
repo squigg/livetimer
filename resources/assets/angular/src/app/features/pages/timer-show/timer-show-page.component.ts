@@ -1,41 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Timer } from "../../../models/timer";
-import { TimerService } from "../../../services/timer.service";
+import { TimerService } from "../../../services/timer/timer.service";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
+import { TriggerHttpService } from "../../../services/trigger/trigger-http.service";
+import { Trigger } from "../../../models/trigger";
 
 @Component({
     selector: 'app-page-timer-show',
     templateUrl: './timer-show-page.component.html',
     styleUrls: ['./timer-show-page.component.scss']
 })
-export class TimerShowPageComponent implements OnInit {
+export class TimerShowPageComponent {
 
     protected timer: Timer;
-    protected timerService: TimerService;
-    protected subscription: Subscription;
+    protected triggers: Trigger[];
+    protected subscriptions: Subscription[] = [];
 
-    constructor(private route: ActivatedRoute, timerService: TimerService) {
-        this.timerService = timerService;
-        this.route.params.subscribe((value: Params) => this.getTimer(value['id']));
+    constructor(private route: ActivatedRoute, private timerService: TimerService, private triggerService: TriggerHttpService) {
+        this.route.params.subscribe((value: Params) => this.init(value['id']));
     }
 
-    ngOnInit() {
-
+    private init(id: string) {
+        this.getTimer(id);
+        this.getTriggers(id);
     }
 
     async getTimer(id: string): Promise<void> {
         let timer = await this.timerService.connect(id);
-        this.subscription = timer.subscribe((timer: Timer) => this.timer = this.handleTick(timer));
+        this.subscriptions.push(timer.subscribe((timer: Timer) => this.timer = timer));
     }
 
-    handleTick(timer: Timer): Timer {
-
-        return timer;
+    async getTriggers(id: string): Promise<void> {
+        let triggers = await this.triggerService.connect(id);
+        this.subscriptions.push(triggers.subscribe((triggers: Trigger[]) => this.triggers = triggers));
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
 }

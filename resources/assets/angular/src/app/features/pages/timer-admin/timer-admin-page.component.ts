@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Timer } from "../../../models/timer";
-import { TimerService } from "../../../services/timer.service";
+import { TimerService } from "../../../services/timer/timer.service";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
