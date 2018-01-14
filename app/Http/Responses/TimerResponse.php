@@ -2,7 +2,6 @@
 
 use App\Timer;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Support\Collection;
 
 /**
  * Created by PhpStorm.
@@ -10,32 +9,14 @@ use Illuminate\Support\Collection;
  * Date: 05/12/17
  * Time: 22:48
  */
-class TimerResponse implements Responsable
+class TimerResponse extends BaseResponse implements Responsable
 {
 
     /**
-     * @var Timer|Collection
+     * @param Timer $timer
+     * @return mixed
      */
-    protected $timer;
-
-    public function __construct($timer)
-    {
-        $this->timer = $timer;
-    }
-
-    public function toResponse($request)
-    {
-        if ($this->timer instanceof Collection) {
-            $data = $this->timer->map(function ($timer) {
-                return $this->transformTimer($timer);
-            });
-        } else {
-            $data = $this->transformTimer($this->timer);
-        }
-        return response()->json($data);
-    }
-
-    protected function transformTimer(Timer $timer)
+    protected function transformOne($timer)
     {
         $data = $timer->toArray();
         $data['id'] = $timer->uuid;
