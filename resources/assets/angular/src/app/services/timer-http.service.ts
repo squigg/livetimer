@@ -2,72 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { AppSettings } from "../../config/appsettings.class";
 import { Timer, TimerJSON } from "../models/timer";
-import { BehaviorSubject, Observable } from "rxjs/Rx";
+import { Observable } from "rxjs/Rx";
 
-import Pusher from 'pusher-js';
-import Echo from 'laravel-echo';
-
-let pusher = Pusher;
+import { PusherService } from "./pusher.service";
 
 @Injectable()
 export class TimerHttpService {
 
-    private http: HttpClient;
-    private echo: any;
-    private timerSubjects = new Map<string, BehaviorSubject<Timer>>();
-
-    constructor(http: HttpClient) {
-        this.http = http;
-        this.echo = this.createEcho();
-    }
-
-    private createEcho(): any {
-        return new Echo({
-            broadcaster: 'pusher',
-            key: AppSettings.PUSHER_KEY,
-            cluster: 'eu',
-            encrypted: true
-        });
+    constructor(private http: HttpClient, private pusherService: PusherService) {
     }
 
     public async connect(id: string): Promise<Observable<Timer>> {
 
-        if (!this.timerExists(id)) {
-            await this.fetchTimer(id);
-        }
+        return Observable.of(await this.get(id))
+            .concat(this.subscribeToPusher(id));
+    }
 
-        this.echo.channel('App.Timer.' + id)
-            .listen('TimerUpdated', (data) => this.timerUpdated(data.timer));
-
-        return this.getTimerSubject(id).asObservable();
+    private subscribeToPusher(id): Observable<Timer> {
+        return this.pusherService.listen(id, 'TimerUpdated')
+            .map((data) => Timer.fromJSON(data.timer));
     }
 
     public disconnect(id: string): void {
-        this.echo.leave('App.Timer.' + id);
-    }
-
-    private timerExists(id: string) {
-        return this.timerSubjects.has(id);
-    }
-
-    private getTimerSubject(id: string): BehaviorSubject<Timer> {
-        return this.timerSubjects.get(id);
-    }
-
-    private createTimerSubject(timer: Timer): void {
-        const timerSubject = new BehaviorSubject<Timer>(timer);
-        this.timerSubjects.set(timer.id, timerSubject);
-    }
-
-    private async fetchTimer(id: string): Promise<void> {
-        let timer = await this.get(id);
-        this.createTimerSubject(timer);
-    }
-
-    private timerUpdated(data: TimerJSON) {
-        const timer = Timer.fromJSON(data)
-        const timerSubject = this.getTimerSubject(timer.id)
-        timerSubject.next(timer);
+        this.pusherService.disconnect(id);
     }
 
     public getTimers(): Promise<Timer[]> {
@@ -124,7 +81,7 @@ export class TimerHttpService {
         return this.action(id, 'pause', {remaining: remaining});
     }
 
-    private convertJsonTimer(objectObservable: Observable<Object>): Promise<Timer> {
-        return objectObservable.toPromise().then((data: HttpResponse<TimerJSON>) => Timer.fromJSON(data.body));
+    private convertJsonTimer(data$: Observable<Object>): Promise<Timer> {
+        return data$.toPromise().then((data: HttpResponse<TimerJSON>) => Timer.fromJSON(data.body));
     }
 }

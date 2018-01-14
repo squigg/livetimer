@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Timer, TimerStatus } from "../models/timer";
 import { TimerHttpService } from "./timer-http.service";
 import { Observable } from "rxjs/Rx";
-import 'rxjs/add/observable/interval';
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
 
 
@@ -18,11 +17,18 @@ export class TimerService {
     }
 
     public async connect(id: string): Promise<Observable<Timer>> {
-        let timerObservable = await this.timerHttp.connect(id);
-        return timerObservable
-            .switchMap((val) => new IntervalObservable(1000).mapTo(val))
+        if (this.timers.has(id)) {
+            return this.timers.get(id);
+        }
+        this.timers.set(id, await this.getTimer(id));
+        return this.timers.get(id);
+    }
+
+    private async getTimer(id): Promise<Observable<Timer>> {
+        return (await this.timerHttp.connect(id))
+            .switchMap((timer) => timer.status === TimerStatus.Started ? new IntervalObservable(1000).mapTo(timer) : Observable.of(timer))
             .map(this.handleTick)
-            .distinctUntilChanged();
+            .share();
     }
 
     handleTick(timer: Timer): Timer {
@@ -32,6 +38,11 @@ export class TimerService {
             return Object.assign(timer, {remaining: remaining, status: status})
         }
         return timer;
+    }
+
+    public disconnect(id: string) {
+        this.timerHttp.disconnect(id);
+        this.timers.delete(id);
     }
 
 }
