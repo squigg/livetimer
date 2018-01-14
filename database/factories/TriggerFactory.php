@@ -21,7 +21,7 @@ $factory->define(App\Trigger::class, function (Faker $faker) {
         'target_time'      => 30,
         'compare_type'     => Trigger::COMPARE_EXACTLY,
         'action'           => Trigger::ACTION_CHANGE_BG_COLOR,
-        'action_parameter' => 'woop_woop',
+        'action_parameter' => 'red',
     ];
 });
 
