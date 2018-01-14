@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
     NavigationCancel,
     NavigationEnd,
@@ -8,18 +8,25 @@ import {
     RouterEvent
 } from "@angular/router";
 
+import { AppService } from "./services/app.service";
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
-    // Sets initial value to true to show loading spinner on first load
     loading: boolean = true;
+    appService: AppService;
 
-    constructor(router: Router) {
+    @HostListener('mousemove') onMouseMove() {
+        this.markActivity();
+    }
+
+    constructor(router: Router, appService: AppService) {
         router.events.subscribe((event: RouterEvent) => this.navigationInterceptor(event));
+        this.appService = appService;
     }
 
     // Shows and hides the loading spinner during RouterEvent changes
@@ -41,4 +48,7 @@ export class AppComponent {
         }
     }
 
+    protected markActivity() {
+        this.appService.setActive();
+    }
 }

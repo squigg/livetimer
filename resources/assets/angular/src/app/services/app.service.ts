@@ -12,7 +12,9 @@ export class AppService {
 
     constructor() {
         this.active = new BehaviorSubject<boolean>(true);
-        this.activeObservable = this.active.throttleTime(500).switchMap(() => this.innerObservable());
+        this.activeObservable = this.active
+            .throttleTime(500)
+            .switchMap(() => this.innerObservable());
     }
 
     getActive(): Observable<boolean> {
@@ -24,7 +26,7 @@ export class AppService {
     }
 
     innerObservable(): Observable<boolean> {
-        return Observable.merge(Observable.of(true), Observable.timer(5000).mapTo(false));
+        return Observable.merge(Observable.of(true), Observable.timer(3000).mapTo(false));
     }
 
 }
