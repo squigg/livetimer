@@ -16,8 +16,9 @@ class ApiTimerController extends Controller
     public function index(Guard $guard)
     {
         /** @var User $user */
-        $user = $guard->user();
-        $timers = $user->timers;
+        //        $user = $guard->user();
+        //        $timers = $user->timers;
+        $timers = Timer::all();
         return new TimerResponse($timers);
     }
 
@@ -30,6 +31,19 @@ class ApiTimerController extends Controller
             $timer->remaining = $timer->finish_at->diffInSeconds();
         }
         return new TimerResponse($timer);
+    }
+
+    public function create(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'     => 'required|string',
+            'duration' => 'sometimes|required|numeric',
+        ]);
+        $timer = new Timer($validatedData);
+        $timer->user_id = 1;
+        $timer->duration = 30;
+
+        return $this->reset($timer);
     }
 
     public function update(Timer $timer, Request $request)
