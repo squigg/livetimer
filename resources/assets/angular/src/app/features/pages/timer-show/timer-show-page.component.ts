@@ -13,8 +13,8 @@ import { Trigger } from "../../../models/trigger";
 })
 export class TimerShowPageComponent {
 
-    protected timer: Timer;
-    protected triggers: Trigger[];
+    timer: Timer;
+    triggers: Trigger[];
     protected subscriptions: Subscription[] = [];
 
     constructor(private route: ActivatedRoute, private timerService: TimerService, private triggerService: TriggerHttpService) {

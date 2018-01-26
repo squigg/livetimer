@@ -11,7 +11,7 @@ export class TimerAdminComponent implements OnInit {
 
     @Input() timer: Timer;
     protected timerHttpService: TimerHttpService;
-    protected duration: number;
+    duration: number;
 
     constructor(timerHttpService: TimerHttpService) {
         this.timerHttpService = timerHttpService;

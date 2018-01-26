@@ -12,7 +12,7 @@ import { Observable } from "rxjs/Observable";
 })
 export class TimerAdminPageComponent implements OnInit {
 
-    protected timer: Observable<Timer>;
+    timer: Observable<Timer>;
     protected timerService: TimerService;
     protected subscription: Subscription;
 

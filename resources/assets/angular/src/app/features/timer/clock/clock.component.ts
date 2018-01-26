@@ -10,9 +10,9 @@ export class ClockComponent implements OnInit {
     @Input() time: number;
     @Input() paused: boolean;
     @Input() showHours = true;
-    protected hours: number;
-    protected minutes: number;
-    protected seconds: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
 
     constructor() {
     }

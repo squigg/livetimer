@@ -9,8 +9,8 @@ import { Timer } from "../../../models/timer";
 })
 export class TimerListComponent implements OnInit {
 
-    private timers: Timer[];
-    private name: string;
+    timers: Timer[];
+    name: string;
 
     constructor(private timerHttpService: TimerHttpService) {
     }
