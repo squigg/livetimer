@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Timer::class, function (Faker $faker) {
     return [
-        'name'      => $faker->name,
+        'name'      => 'Timer ' . $faker->unique()->randomDigitNotNull,
         'status'    => Timer::STATUS_STOPPED,
         'duration'  => 35,
         'remaining' => 35,

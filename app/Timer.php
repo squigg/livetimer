@@ -17,6 +17,7 @@ use Illuminate\Support\Collection;
  * @property string uuid
  * @property int id
  * @property Collection triggers
+ * @property int user_id
  */
 class Timer extends Model
 {
