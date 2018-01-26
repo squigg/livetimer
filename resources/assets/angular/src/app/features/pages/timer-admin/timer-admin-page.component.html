@@ -1,2 +1,2 @@
 <app-navigation></app-navigation>
-<app-timer-admin *ngIf="timer" [timer]="timer"></app-timer-admin>
+<app-timer-admin *ngIf="timer" [timer]="timer | async"></app-timer-admin>

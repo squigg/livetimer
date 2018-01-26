@@ -26,18 +26,29 @@ export class TimerService {
 
     private async getTimer(id): Promise<Observable<Timer>> {
         return (await this.timerHttp.connect(id))
-            .switchMap((timer) => timer.status === TimerStatus.Started ? new IntervalObservable(1000).mapTo(timer) : Observable.of(timer))
-            .map(this.handleTick)
+            .switchMap(
+                (timer) => timer.status === TimerStatus.Started
+                    ? Observable.concat(Observable.of(timer), new IntervalObservable(1000).mapTo(timer))
+                    : Observable.of(timer),
+                (outer, inner, outerIndex, innerIndex) => this.handleTick(outer, innerIndex))
             .share();
     }
 
-    handleTick(timer: Timer): Timer {
+    handleTick(timer: Timer, elapsed: number): Timer {
         if (timer.status === TimerStatus.Started) {
-            let remaining = Math.max(timer.remaining - 1, 0);
-            let status = remaining === 0 ? TimerStatus.Complete : TimerStatus.Started;
-            return Object.assign(timer, {remaining: remaining, status: status})
+            const remaining = Math.max(timer.remaining - elapsed, 0);
+            let newValues = {remaining: remaining};
+            if (remaining === 0) {
+                newValues['status'] = TimerStatus.Complete;
+                this.sendComplete(timer);
+            }
+            return Object.assign({}, timer, {remaining: remaining, status: status})
         }
         return timer;
+    }
+
+    private sendComplete(timer: Timer) {
+        this.timerHttp.complete(timer.id);
     }
 
     public disconnect(id: string) {

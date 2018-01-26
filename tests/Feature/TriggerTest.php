@@ -42,13 +42,14 @@ class TriggerTest extends TestCase
     {
         $response = $this->json('get', $this->triggerUrl);
         $response->assertStatus(200)->assertJson([
-            'name'             => $this->trigger->name,
-            'id'               => $this->trigger->uuid,
-            'target_time'      => $this->trigger->target_time,
-            'compare_type'     => $this->trigger->compare_type,
-            'action'           => $this->trigger->action,
-            'action_parameter' => $this->trigger->action_parameter,
-            'enabled'          => $this->trigger->enabled,
+            'name'              => $this->trigger->name,
+            'id'                => $this->trigger->uuid,
+            'timer_id'          => $this->trigger->timer_id,
+            'target_time'       => $this->trigger->target_time,
+            'compare_type'      => $this->trigger->compare_type,
+            'action_type'       => $this->trigger->action_type,
+            'action_parameters' => $this->trigger->action_parameters,
+            'enabled'           => $this->trigger->enabled,
         ]);
     }
 
@@ -59,13 +60,13 @@ class TriggerTest extends TestCase
         $response = $this->json('get', $url);
         $response->assertStatus(200)->assertJson([
             [
-                'name'             => $this->trigger->name,
-                'id'               => $this->trigger->uuid,
-                'target_time'      => $this->trigger->target_time,
-                'compare_type'     => $this->trigger->compare_type,
-                'action'           => $this->trigger->action,
-                'action_parameter' => $this->trigger->action_parameter,
-                'enabled'          => $this->trigger->enabled,
+                'name'              => $this->trigger->name,
+                'id'                => $this->trigger->uuid,
+                'target_time'       => $this->trigger->target_time,
+                'compare_type'      => $this->trigger->compare_type,
+                'action_type'       => $this->trigger->action_type,
+                'action_parameters' => $this->trigger->action_parameters,
+                'enabled'           => $this->trigger->enabled,
             ]
         ]);
     }

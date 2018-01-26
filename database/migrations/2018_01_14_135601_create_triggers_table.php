@@ -21,8 +21,8 @@ class CreateTriggersTable extends Migration
             $table->integer('target_time');
             $table->string('name')->nullable();
             $table->string('compare_type');
-            $table->string('action');
-            $table->string('action_parameter')->nullable();
+            $table->longText('action_type');
+            $table->string('action_parameters')->nullable();
             $table->boolean('enabled')->default(true);
             $table->foreign('timer_id')->references('id')->on('timers');
             $table->timestamps();

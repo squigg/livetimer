@@ -53,7 +53,8 @@ export class TriggerHttpService {
     }
 
     private convertJsonTrigger(data$: Observable<Object>): Promise<Trigger> {
-        return data$.toPromise().then((data: HttpResponse<TriggerJSON>) => Trigger.fromJSON(data.body));
+        return data$.toPromise()
+            .then((data: HttpResponse<TriggerJSON>) => Trigger.fromJSON(data.body))
     }
 
 }

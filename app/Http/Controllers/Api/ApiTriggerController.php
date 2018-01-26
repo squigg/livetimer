@@ -27,11 +27,11 @@ class ApiTriggerController extends Controller
     public function update(Trigger $trigger, Request $request)
     {
         $validatedData = $request->validate([
-            'name'             => 'sometimes|required|string',
-            'target_time'      => 'sometimes|required|numeric',
-            'action'           => 'sometimes|required|string',
-            'action_parameter' => 'sometimes|required|string',
-            'compare_type'     => 'sometimes|required|string',
+            'name'              => 'sometimes|required|string',
+            'target_time'       => 'sometimes|required|numeric',
+            'action_type'       => 'sometimes|required|string',
+            'action_parameters' => 'sometimes|required|string',
+            'compare_type'      => 'sometimes|required|string',
         ]);
 
         $trigger->fill($validatedData);

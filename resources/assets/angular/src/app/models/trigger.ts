@@ -1,10 +1,11 @@
-export enum TriggerAction {
+import { TriggerAction, TriggerActionParam } from "../services/trigger/trigger-actions";
+
+export enum TriggerActionType {
     PlaySound = "play_sound",
-    ChangeForeground = "change_fg_color",
-    ChangeBackground = "change_bg_color",
+    ChangeStyle = "change_style",
 }
 
-export enum TriggerCompare {
+export enum TriggerCompareType {
     Exactly = "exactly",
     LessThan = "less_than",
     GreaterThan = "greater_than",
@@ -12,13 +13,15 @@ export enum TriggerCompare {
 
 export class Trigger {
 
+    public action: TriggerAction;
+
     constructor(public id: string,
                 public name: string,
                 public enabled: boolean,
                 public target_time: number,
-                public compare_type: TriggerCompare,
-                public action: TriggerAction,
-                public action_parameter: string) {
+                public compare_type: TriggerCompareType,
+                public action_type: TriggerActionType,
+                public action_parameters: TriggerActionParam[]) {
     }
 
     // toJSON is automatically used by JSON.stringify
@@ -58,8 +61,8 @@ export interface TriggerJSON {
     id: string;
     name: string;
     target_time: number;
-    compare_type: TriggerCompare;
-    action: TriggerAction;
-    action_parameter: string;
+    compare_type: TriggerCompareType;
+    action_type: TriggerActionType;
+    action_parameters: TriggerActionParam[];
     enabled: boolean;
 }

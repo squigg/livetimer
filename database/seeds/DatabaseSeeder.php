@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
 
         $timer = Timer::all()->first();
         factory(Trigger::class)->create(['timer_id' => $timer->id]);
+        factory(Trigger::class)->states(['sound'])->create(['timer_id' => $timer->id]);
+        factory(Trigger::class)->states(['sound_complete'])->create(['timer_id' => $timer->id]);
 
     }
 }

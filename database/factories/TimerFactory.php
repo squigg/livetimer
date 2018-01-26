@@ -18,8 +18,8 @@ $factory->define(App\Timer::class, function (Faker $faker) {
     return [
         'name'      => $faker->name,
         'status'    => Timer::STATUS_STOPPED,
-        'duration'  => 300,
-        'remaining' => 300,
+        'duration'  => 35,
+        'remaining' => 35,
         'user_id'   => 1,
     ];
 });

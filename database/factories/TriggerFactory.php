@@ -16,21 +16,29 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Trigger::class, function (Faker $faker) {
     return [
-        'name'             => $faker->name,
-        'enabled'          => true,
-        'target_time'      => 30,
-        'compare_type'     => Trigger::COMPARE_EXACTLY,
-        'action'           => Trigger::ACTION_CHANGE_BG_COLOR,
-        'action_parameter' => 'red',
+        'name'              => $faker->name,
+        'enabled'           => true,
+        'target_time'       => 30,
+        'compare_type'      => Trigger::COMPARE_LESS_THAN,
+        'action_type'       => Trigger::ACTION_CHANGE_STYLE,
+        'action_parameters' => ['property' => 'background-color', 'value' => 'red'],
     ];
 });
 
 $factory->state(App\Trigger::class, 'sound', [
-    'action'           => Trigger::ACTION_PLAY_SOUND,
-    'action_parameter' => 'woop_woop',
+    'compare_type'      => Trigger::COMPARE_EXACTLY,
+    'action_type'       => Trigger::ACTION_PLAY_SOUND,
+    'action_parameters' => ['sound' => 'woop_woop'],
+]);
+
+$factory->state(App\Trigger::class, 'sound_complete', [
+    'compare_type'      => Trigger::COMPARE_EXACTLY,
+    'target_time'       => 0,
+    'action_type'       => Trigger::ACTION_PLAY_SOUND,
+    'action_parameters' => ['sound' => 'railroad_crossing_bell'],
 ]);
 
 $factory->state(App\Trigger::class, 'bg_color', [
-    'action'           => Trigger::ACTION_CHANGE_BG_COLOR,
-    'action_parameter' => 'red',
+    'action_type'       => Trigger::ACTION_CHANGE_STYLE,
+    'action_parameters' => ['property' => 'background-color', 'value' => 'red'],
 ]);

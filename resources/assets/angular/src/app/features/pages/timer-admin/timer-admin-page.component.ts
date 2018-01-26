@@ -3,6 +3,7 @@ import { Timer } from "../../../models/timer";
 import { TimerService } from "../../../services/timer/timer.service";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'app-page-timer-admin',
@@ -11,7 +12,7 @@ import { Subscription } from "rxjs/Subscription";
 })
 export class TimerAdminPageComponent implements OnInit {
 
-    protected timer: Timer;
+    protected timer: Observable<Timer>;
     protected timerService: TimerService;
     protected subscription: Subscription;
 
@@ -25,12 +26,7 @@ export class TimerAdminPageComponent implements OnInit {
     }
 
     async getTimer(id: string): Promise<void> {
-        let timer = await this.timerService.connect(id);
-        this.subscription = timer.subscribe((timer: Timer) => this.timer = timer);
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.timer = await this.timerService.connect(id);
     }
 
 }
