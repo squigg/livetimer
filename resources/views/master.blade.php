@@ -11,10 +11,10 @@
 </head>
 <body>
 @yield('content')
-<script type="text/javascript" src="/inline.bundle.js"></script>
-<script type="text/javascript" src="/polyfills.bundle.js"></script>
-<script type="text/javascript" src="/styles.bundle.js"></script>
-<script type="text/javascript" src="/vendor.bundle.js"></script>
-<script type="text/javascript" src="/main.bundle.js"></script>
+<script type="text/javascript" src="/dist/inline.bundle.js"></script>
+<script type="text/javascript" src="/dist/polyfills.bundle.js"></script>
+<script type="text/javascript" src="/dist/styles.bundle.js"></script>
+<script type="text/javascript" src="/dist/vendor.bundle.js"></script>
+<script type="text/javascript" src="/dist/main.bundle.js"></script>
 </body>
 </html>
