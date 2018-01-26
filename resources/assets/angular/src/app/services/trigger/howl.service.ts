@@ -5,7 +5,7 @@ import { AppSettings } from "../../../config/appsettings.class";
 @Injectable()
 export class HowlService {
 
-    private howls: Map<string, Howl>;
+    private howls = new Map<string, Howl>();
 
     constructor() {
         AppSettings.SOUNDS.forEach((sound) => this.createHowl(sound));
@@ -22,5 +22,8 @@ export class HowlService {
         this.howls.get(sound).play();
     }
 
+    stop(sound: string) {
+        this.howls.get(sound).stop();
+    }
 
 }
