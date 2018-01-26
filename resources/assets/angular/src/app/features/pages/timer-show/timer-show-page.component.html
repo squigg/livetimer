@@ -1,6 +1,6 @@
-<div *ngIf="timer">
-  <app-timer-display [timer]="timer" [triggers]="triggers"></app-timer-display>
-  <a routerLink="/timer/{{ timer.id }}/admin">
+<div *ngIf="timer" class="display-wrapper">
+  <app-timer-display class="display" [timer]="timer" [triggers]="triggers"></app-timer-display>
+  <a class="admin-button" routerLink="/timer/{{ timer.id }}/admin">
     <app-square-icon-button appHideOnInactive [icon]="'cog'"></app-square-icon-button>
   </a>
 </div>

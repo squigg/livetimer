@@ -1,4 +1,6 @@
-<app-timer-display [timer]="timer"></app-timer-display>
+<div class="display-wrapper">
+  <app-timer-display [timer]="timer"></app-timer-display>
+</div>
 <div>{{ timer.status }}</div>
 <div>
   <button *ngIf="showPause()" type="button" (click)="pause()">Pause</button>

@@ -1,1 +1,5 @@
-<app-clock [time]="getRemaining()" [paused]="getPaused()" [showHours]="getShowHours()"></app-clock>
+<div class="clock-wrapper" #clockWrapper>
+  <div class="clock">
+    <app-clock [time]="getRemaining()" [paused]="getPaused()" [showHours]="getShowHours()"></app-clock>
+  </div>
+</div>
