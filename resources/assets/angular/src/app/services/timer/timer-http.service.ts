@@ -45,7 +45,7 @@ export class TimerHttpService {
         return this.http.delete(AppSettings.API_ROOT + '/timers/' + id);
     }
 
-    public create(id: string, name: string) {
+    public create(name: string) {
         return this.convertJsonTimer(this.http.post<TimerJSON>(AppSettings.API_ROOT + '/timers', {name: name}, {observe: 'response'}));
     }
 
