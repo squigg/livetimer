@@ -1,3 +1,11 @@
-<p>
-  timerlist works!
-</p>
+<ul>
+  <li *ngFor="let timer of timers">
+    <a routerLink="/timer/{{ timer.id }}">
+      {{ timer.name }} - {{ timer.duration }} seconds
+    </a>
+  </li>
+</ul>
+<input type="text" [(ngModel)]="name" name="name" id="name" placeholder="Timer Name">
+<a (click)="createTimer()">
+  <button type="button">New Timer</button>
+</a>
