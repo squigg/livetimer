@@ -1,4 +1,2 @@
 # Created by .ignore support plugin (hsz.mobi)
-index.html
-*.bundle.js
-*.bundle.js.*
+dist/
