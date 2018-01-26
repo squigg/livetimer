@@ -31,7 +31,7 @@ class BaseResponse implements Responsable
      */
     public function toResponse($request)
     {
-        return response()->json($this->transform());
+        return response()->json($this->transform(), 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
