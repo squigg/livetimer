@@ -34,6 +34,7 @@ Route::namespace('Api')->group(function () {
     Route::post('/timers/{timer}/reset', 'ApiTimerController@reset')->name('timer.reset');
     Route::post('/timers/{timer}/pause', 'ApiTimerController@pause')->name('timer.pause');
     Route::post('/timers/{timer}/resume', 'ApiTimerController@resume')->name('timer.resume');
+    Route::post('/timers/{timer}/complete', 'ApiTimerController@complete')->name('timer.complete');
     Route::delete('/timers/{timer}', 'ApiTimerController@delete')->name('timer.delete');
 
     // TRIGGERS

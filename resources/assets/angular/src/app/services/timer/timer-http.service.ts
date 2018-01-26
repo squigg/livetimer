@@ -73,6 +73,10 @@ export class TimerHttpService {
         return this.action(id, 'resume');
     }
 
+    public complete(id: string) {
+        return this.action(id, 'complete');
+    }
+
     public stop(id: string, remaining: number) {
         return this.action(id, 'stop', {remaining: remaining});
     }
