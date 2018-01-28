@@ -9,6 +9,8 @@ import { TimerAdminComponent } from "./timer-admin/timer-admin.component";
 import { TimerDisplayComponent } from "./timer-display/timer-display.component";
 import { TimerListComponent } from "./timer-list/timer-list.component";
 import { RouterModule } from "@angular/router";
+import { TriggerAdminComponent } from './trigger-admin/trigger-admin.component';
+import { TriggerFormComponent } from './trigger-form/trigger-form.component';
 
 @NgModule({
     imports: [
@@ -27,6 +29,8 @@ import { RouterModule } from "@angular/router";
         TimerDisplayComponent,
         TimerListComponent,
         ClockComponent,
+        TriggerAdminComponent,
+        TriggerFormComponent,
     ]
 })
 export class TimerModule {

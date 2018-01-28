@@ -1,16 +1,19 @@
 <div class="display-wrapper">
   <app-timer-display [timer]="timer"></app-timer-display>
 </div>
-<div>{{ timer.status }}</div>
-<div>
-  <button *ngIf="showPause()" type="button" (click)="pause()">Pause</button>
-  <button *ngIf="showStop()" type="button" (click)="stop()">Stop</button>
-  <button *ngIf="showResume()" type="button" (click)="resume()">Resume</button>
-  <button *ngIf="showStart()" type="button" (click)="start()">Start</button>
-  <button *ngIf="!isInitial()" type="button" (click)="start()">Restart</button>
-  <button *ngIf="!isInitial()" type="button" (click)="reset()">Reset</button>
+<div class="timerStatus">State: {{ timer.status }}</div>
+<div class="btn-group mt-3">
+  <button class="btn btn-success" *ngIf="showResume()" type="button" (click)="resume()">Resume</button>
+  <button class="btn btn-primary" *ngIf="showPause()" type="button" (click)="pause()">Pause</button>
+  <button class="btn btn-danger" *ngIf="showStop()" type="button" (click)="stop()">Stop</button>
+  <button class="btn btn-success" *ngIf="showStart()" type="button" (click)="start()">Start</button>
+  <button class="btn btn-warning" *ngIf="!isInitial()" type="button" (click)="start()">Restart</button>
+  <button class="btn btn-secondary" *ngIf="!isInitial()" type="button" (click)="reset()">Reset</button>
 </div>
-<div>
-  <input type="number" size="4" min="1" step="1" name="duration" [(ngModel)]="duration"> Seconds
-  <button type="button" (click)="setDuration()">Set Time</button>
+<div class="input-group mt-3">
+  <input class="form-control" type="number" size="4" min="1" step="1" name="duration" [(ngModel)]="duration" placeholder="Seconds">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" (click)="setDuration()">Set Time</button>
+  </div>
 </div>
+<app-trigger-admin [triggers]="triggers" [timerId]="timer.id"></app-trigger-admin>

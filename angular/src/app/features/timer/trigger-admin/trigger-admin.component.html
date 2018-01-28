@@ -1,0 +1,10 @@
+<h3 class="mt-3">Triggers</h3>
+<app-trigger-form *ngFor="let trigger of triggers" [trigger]="trigger" (save)="save($event)" (delete)="delete($event)"></app-trigger-form>
+<ng-container *ngIf="createNew; then newForm; else newButton"></ng-container>
+<ng-template #newForm>
+  <app-trigger-form [trigger]="newTrigger" (save)="saveNew($event)"></app-trigger-form>
+  <button type="button" class="btn btn-outline-danger mt-3" (click)="cancelNew()">Cancel</button>
+</ng-template>
+<ng-template #newButton>
+  <button type="button" class="btn btn-outline-primary mt-3" (click)="startNew()">New Trigger</button>
+</ng-template>
