@@ -35,7 +35,7 @@ class ApiTimerController extends Controller
 
     public function create(Request $request)
     {
-        $validatedData = $request->validate([
+        $validatedData = $this->validate($request, [
             'name'     => 'required|string',
             'duration' => 'sometimes|required|numeric',
         ]);
@@ -49,7 +49,7 @@ class ApiTimerController extends Controller
     public function update(Timer $timer, Request $request)
     {
         $duration = $timer->duration;
-        $validatedData = $request->validate([
+        $validatedData = $this->validate($request, [
             'name'     => 'sometimes|required|string',
             'duration' => 'sometimes|required|numeric',
         ]);
@@ -93,7 +93,7 @@ class ApiTimerController extends Controller
 
     public function stop(Timer $timer, Request $request)
     {
-        $validatedData = $request->validate([
+        $validatedData = $this->validate($request, [
             'remaining' => 'required|numeric|max:' . $timer->duration
         ]);
         $timer->status = Timer::STATUS_STOPPED;
@@ -105,7 +105,7 @@ class ApiTimerController extends Controller
 
     public function pause(Timer $timer, Request $request)
     {
-        $validatedData = $request->validate([
+        $validatedData = $this->validate($request, [
             'remaining' => 'required|numeric|max:' . $timer->duration
         ]);
         $timer->status = Timer::STATUS_PAUSED;
