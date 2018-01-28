@@ -4,6 +4,10 @@ import { TimerHttpService } from "./timer-http.service";
 import { Observable } from "rxjs/Rx";
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
 
+interface TimerNewValues {
+    remaining: number,
+    status?: TimerStatus
+}
 
 @Injectable()
 export class TimerService {
@@ -35,16 +39,18 @@ export class TimerService {
     }
 
     handleTick(timer: Timer, elapsed: number): Timer {
-        if (timer.status === TimerStatus.Started) {
-            const remaining = Math.max(timer.remaining - elapsed, 0);
-            let newValues = {remaining: remaining};
-            if (remaining === 0) {
-                newValues['status'] = TimerStatus.Complete;
-                this.sendComplete(timer);
-            }
-            return Object.assign({}, timer, newValues)
+        if (timer.status !== TimerStatus.Started) return timer;
+
+        const remaining = timer.remaining - elapsed;
+        let newValues: TimerNewValues = {remaining: remaining};
+
+        if (remaining <= -1) {
+            newValues.remaining = 0;
+            newValues.status = TimerStatus.Complete;
+            this.sendComplete(timer);
         }
-        return timer;
+
+        return Object.assign({}, timer, newValues)
     }
 
     private sendComplete(timer: Timer) {
