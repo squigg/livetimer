@@ -21,7 +21,7 @@ export class Trigger {
                 public target_time: number,
                 public compare_type: TriggerCompareType,
                 public action_type: TriggerActionType,
-                public action_parameters: TriggerActionParam[]) {
+                public action_parameters: TriggerActionParam) {
     }
 
     // toJSON is automatically used by JSON.stringify
@@ -63,6 +63,6 @@ export interface TriggerJSON {
     target_time: number;
     compare_type: TriggerCompareType;
     action_type: TriggerActionType;
-    action_parameters: TriggerActionParam[];
+    action_parameters: TriggerActionParam;
     enabled: boolean;
 }
