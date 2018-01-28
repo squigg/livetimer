@@ -44,8 +44,8 @@ export class TriggerHttpService {
         return this.http.delete(AppSettings.API_ROOT + '/triggers/' + id);
     }
 
-    public create(trigger: Trigger) {
-        return this.convertJsonTrigger(this.http.post<TriggerJSON>(AppSettings.API_ROOT + '/triggers', trigger, {observe: 'response'}));
+    public create(timerId: string, trigger: Trigger) {
+        return this.convertJsonTrigger(this.http.post<TriggerJSON>(AppSettings.API_ROOT + '/timers/' + timerId + '/triggers', trigger, {observe: 'response'}));
     }
 
     public rename(id: string, name: string) {
