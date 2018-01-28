@@ -9,26 +9,30 @@ export interface TriggerActionParam {
 }
 
 export abstract class TriggerAction {
+
+    applied: boolean = false;
+
     abstract apply(): void;
 
     abstract remove(): void;
 }
 
-export class TriggerStyleAction {
+export class TriggerStyleAction extends TriggerAction {
 
     private previousValue;
 
     constructor(public property: string, public value: string, public el: HTMLElement) {
+        super();
     }
 
     apply(): void {
-        this.previousValue = this.el.style.getPropertyValue(this.property);
+        if (!this.applied) this.previousValue = this.el.style.getPropertyValue(this.property);
         this.el.style.setProperty(this.property, this.value);
     }
 
     remove(): void {
         if (this.previousValue) {
-            this.el.style.setProperty(this.property, this.value);
+            this.el.style.setProperty(this.property, this.previousValue);
         }
         else {
             this.el.style.removeProperty(this.property);
@@ -36,9 +40,10 @@ export class TriggerStyleAction {
     }
 }
 
-export class TriggerSoundAction {
+export class TriggerSoundAction extends TriggerAction {
 
     constructor(public sound: string, public repeat = 1, public player: IAudioPlayer) {
+        super();
     }
 
     apply(): void {

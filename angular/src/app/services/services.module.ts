@@ -7,6 +7,7 @@ import { AppService } from "./app.service";
 import { PusherService } from "./pusher.service";
 import { TriggerHttpService } from "./trigger/trigger-http.service";
 import { HowlService } from "./trigger/howl.service";
+import { TriggerService } from "./trigger/trigger.service";
 
 @NgModule({
     declarations: [],
@@ -19,6 +20,7 @@ import { HowlService } from "./trigger/howl.service";
         AppService,
         PusherService,
         TriggerHttpService,
+        TriggerService,
         HowlService
     ],
 })

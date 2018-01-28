@@ -1,8 +1,7 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Timer, TimerStatus } from "../../../models/timer";
-import { Trigger, TriggerActionType, TriggerCompareType } from "../../../models/trigger";
-import { HowlService } from "../../../services/trigger/howl.service";
-import { TriggerAction, TriggerSoundAction, TriggerStyleAction } from "../../../services/trigger/trigger-actions";
+import { Trigger } from "../../../models/trigger";
+import { TriggerService } from "../../../services/trigger/trigger.service";
 
 @Component({
     selector: 'app-timer-display',
@@ -12,16 +11,18 @@ import { TriggerAction, TriggerSoundAction, TriggerStyleAction } from "../../../
 export class TimerDisplayComponent implements OnInit, OnChanges {
 
     @Input() timer: Timer;
-    @Input() triggers = Array<Trigger>();
+    @Input() triggers: Trigger[] = [];
     @ViewChild('clockWrapper') clockWrapper: ElementRef;
 
-    private appliedTriggers = new Set<string>();
-
-    constructor(private howl: HowlService) {
+    constructor(private triggerService: TriggerService) {
     }
 
     ngOnInit() {
 
+    }
+
+    ngAfterViewInit() {
+        this.triggerService.registerHtmlElement(this.clockWrapper.nativeElement);
     }
 
     getRemaining(): number {
@@ -37,56 +38,19 @@ export class TimerDisplayComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log('Changes', changes);
+        console.log('Changes', changes, changes.timer, changes.triggers);
         if (changes.timer && changes.timer.currentValue && this.triggers) {
             this.triggers.forEach((trigger) => this.checkTrigger(trigger, changes.timer.currentValue.remaining));
         }
         if (changes.triggers && changes.triggers.currentValue) {
-            this.triggers.forEach((trigger) => this.createTriggerActions(trigger));
+            this.triggers.forEach((trigger) => this.triggerService.setTriggerActions(trigger));
         }
     }
 
     checkTrigger(trigger: Trigger, time: number): void {
         console.log('Checking Trigger', trigger);
-        this.shouldBeApplied(trigger, time) ? this.applyTrigger(trigger) : this.removeTrigger(trigger);
+        this.triggerService.shouldBeApplied(trigger, time) ? this.triggerService.applyTrigger(trigger) : this.triggerService.removeTrigger(trigger);
     }
 
-    applyTrigger(trigger: Trigger): void {
-        console.log('Applying Trigger', trigger);
-        trigger.action.apply();
-        this.appliedTriggers.add(trigger.id);
-    }
 
-    removeTrigger(trigger: Trigger): void {
-        const exists = this.appliedTriggers.delete(trigger.id);
-        if (exists) {
-            console.log('Removing Trigger', trigger);
-            trigger.action.remove();
-        }
-    }
-
-    shouldBeApplied(trigger: Trigger, time: number): boolean {
-        console.log('Checking Trigger', trigger);
-        if (trigger.compare_type === TriggerCompareType.Exactly) {
-            return time === trigger.target_time;
-        }
-        if (trigger.compare_type === TriggerCompareType.LessThan) {
-            return time < trigger.target_time;
-        }
-        if (trigger.compare_type === TriggerCompareType.GreaterThan) {
-            return time > trigger.target_time;
-        }
-    }
-
-    private createTriggerActions(trigger: Trigger): Trigger {
-        let action: TriggerAction;
-        if (trigger.action_type === TriggerActionType.PlaySound) {
-            action = new TriggerSoundAction(trigger.action_parameters['sound'], 1, this.howl);
-        }
-        if (trigger.action_type === TriggerActionType.ChangeStyle) {
-            action = new TriggerStyleAction(trigger.action_parameters['property'], trigger.action_parameters['value'], this.clockWrapper.nativeElement);
-        }
-        trigger.action = action;
-        return trigger;
-    }
 }

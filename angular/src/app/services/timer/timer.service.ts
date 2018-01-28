@@ -42,7 +42,7 @@ export class TimerService {
                 newValues['status'] = TimerStatus.Complete;
                 this.sendComplete(timer);
             }
-            return Object.assign({}, timer, {remaining: remaining, status: status})
+            return Object.assign({}, timer, newValues)
         }
         return timer;
     }
