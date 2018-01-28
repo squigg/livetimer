@@ -24,15 +24,20 @@ class ApiTriggerController extends Controller
         return new TriggerResponse($trigger);
     }
 
+    public function create(Timer $timer, Request $request)
+    {
+        $validatedData = $this->validateTrigger($request);
+
+        $trigger = new Trigger($validatedData);
+        $trigger->timer()->associate($timer);
+        $trigger->save();
+
+        return new TriggerResponse($trigger);
+    }
+
     public function update(Trigger $trigger, Request $request)
     {
-        $validatedData = $request->validate([
-            'name'              => 'sometimes|required|string',
-            'target_time'       => 'sometimes|required|numeric',
-            'action_type'       => 'sometimes|required|string',
-            'action_parameters' => 'sometimes|required|string',
-            'compare_type'      => 'sometimes|required|string',
-        ]);
+        $validatedData = $this->validateTrigger($request);
 
         $trigger->fill($validatedData);
         $trigger->save();
@@ -44,6 +49,17 @@ class ApiTriggerController extends Controller
         /** @noinspection PhpUnhandledExceptionInspection */
         $trigger->delete();
         return response(null, 200);
+    }
+
+    protected function validateTrigger(Request $request)
+    {
+        return $this->validate($request, [
+            'name'              => 'required|string',
+            'target_time'       => 'required|numeric',
+            'action_type'       => 'required|string',
+            'action_parameters' => 'sometimes|required|array',
+            'compare_type'      => 'required|string',
+        ]);
     }
 
 }
