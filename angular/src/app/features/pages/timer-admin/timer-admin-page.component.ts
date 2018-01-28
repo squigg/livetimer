@@ -31,13 +31,13 @@ export class TimerAdminPageComponent implements OnInit {
     }
 
     async getTimer(id: string): Promise<void> {
-        let timer = await this.timerService.connect(id);
-        this.subscriptions.push(timer.subscribe((timer: Timer) => this.timer = timer));
+        let timer$ = await this.timerService.connect(id);
+        this.subscriptions.push(timer$.subscribe((timer: Timer) => this.timer = timer));
     }
 
     async getTriggers(id: string): Promise<void> {
-        let triggers = await this.triggerService.connect(id);
-        this.subscriptions.push(triggers.subscribe((triggers: Trigger[]) => this.triggers = triggers));
+        let triggers$ = await this.triggerService.connect(id);
+        this.subscriptions.push(triggers$.subscribe((triggers: Trigger[]) => this.triggers = triggers));
     }
 
     ngOnDestroy() {
