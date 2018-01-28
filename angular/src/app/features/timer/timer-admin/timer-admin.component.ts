@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TimerHttpService } from "../../../services/timer/timer-http.service";
 import { Timer, TimerStatus } from "../../../models/timer";
+import { Trigger } from "../../../models/trigger";
 
 @Component({
     selector: 'app-timer-admin',
@@ -10,6 +11,7 @@ import { Timer, TimerStatus } from "../../../models/timer";
 export class TimerAdminComponent implements OnInit {
 
     @Input() timer: Timer;
+    @Input() triggers: Trigger[];
     protected timerHttpService: TimerHttpService;
     duration: number;
 
