@@ -2,13 +2,21 @@ import { Injectable } from '@angular/core';
 import { HowlService } from "./howl.service";
 import { TriggerAction, TriggerSoundAction, TriggerStyleAction } from "./trigger-actions";
 import { Trigger, TriggerActionType, TriggerCompareType } from "../../models/trigger";
+import SelectOption from "../../shared/classes/select-option";
+import { AppSettings } from "../../../config/appsettings.class";
 
 @Injectable()
 export class TriggerService {
 
     private rootElement: HTMLElement;
+    public compareOptions: SelectOption[];
+    public soundOptions: SelectOption[];
+    public actionOptions: SelectOption[];
 
     constructor(private howl: HowlService) {
+        this.compareOptions = Object.keys(TriggerCompareType).map((key, index) => new SelectOption(key, Object.values(TriggerCompareType)[index]));
+        this.actionOptions = Object.keys(TriggerActionType).map((key, index) => new SelectOption(key, Object.values(TriggerActionType)[index]));
+        this.soundOptions = AppSettings.SOUNDS.map((value, index) => new SelectOption(value, value));
     }
 
     registerHtmlElement(el: HTMLElement) {
@@ -16,7 +24,6 @@ export class TriggerService {
     }
 
     shouldBeApplied(trigger: Trigger, time: number): boolean {
-        console.log('Checking Trigger', trigger);
         if (trigger.compare_type === TriggerCompareType.Exactly) {
             return time === trigger.target_time;
         }
@@ -41,14 +48,12 @@ export class TriggerService {
     }
 
     applyTrigger(trigger: Trigger): void {
-        console.log('Applying Trigger', trigger);
         trigger.action.apply();
         trigger.action.applied = true;
     }
 
     removeTrigger(trigger: Trigger): void {
         if (trigger.action.applied) {
-            console.log('Removing Trigger', trigger);
             trigger.action.remove();
             trigger.action.applied = false;
         }
