@@ -24,13 +24,13 @@ class ReplicateOnChannel
         /** @var Response $response */
         $response = $next($request);
 
-        if ($request->method() !== 'GET') {
+        if ($request->method() !== 'GET' && $response->status() === 200) {
 
             if ($request->routeIs('timer.*')) {
-                $this->replicateTimer($response->content());
+                $this->replicateTimer($request);
             }
 
-            if ($request->routeIs('trigger.*')) {
+            if ($request->routeIs('trigger.*') || $request->routeIs('timer.template')) {
                 $this->replicateTrigger($request);
             }
         }
@@ -38,18 +38,24 @@ class ReplicateOnChannel
         return $response;
     }
 
-    protected function replicateTimer($timerData)
+    protected function replicateTimer(Request $request)
     {
-        event(new TimerUpdated(json_decode($timerData, true)));
+        //event(new TimerUpdated(json_decode($timerData, true)));
+        $timer = $this->getTimer($request);
+        event(new TimerUpdated($timer));
     }
 
     protected function replicateTrigger(Request $request)
     {
-        $timer = $request->route()->parameter('timer');
-        if (!$timer) {
+        if (!$timer = $this->getTimer($request)) {
             $timer = $request->route()->parameter('trigger')->timer;
         }
         $triggerData = (new TriggerResponse($timer->triggers))->transform()->toArray();
         event(new TriggerUpdated($timer->uuid, $triggerData));
+    }
+
+    protected function getTimer(Request $request)
+    {
+        return $request->route()->parameter('timer');
     }
 }
