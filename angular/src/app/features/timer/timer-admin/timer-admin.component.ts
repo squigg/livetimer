@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { TimerHttpService } from "../../../services/timer/timer-http.service";
 import { Timer, TimerStatus } from "../../../models/timer";
 import { Trigger } from "../../../models/trigger";
+import SelectOption from "../../../shared/classes/select-option";
 
 @Component({
     selector: 'app-timer-admin',
@@ -12,14 +13,30 @@ export class TimerAdminComponent implements OnInit {
 
     @Input() timer: Timer;
     @Input() triggers: Trigger[];
-    protected timerHttpService: TimerHttpService;
-    duration: number;
+    @Input() templates: Timer[];
 
-    constructor(timerHttpService: TimerHttpService) {
-        this.timerHttpService = timerHttpService;
+    templateOptions: SelectOption[];
+    templateId: string;
+
+    duration: number;
+    name: string;
+    finishAt: Date;
+
+    constructor(protected timerHttpService: TimerHttpService) {
     }
 
     ngOnInit() {
+
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.templates) {
+            this.templateOptions = changes.templates.currentValue.map((t) => new SelectOption(t.name, t.id));
+        }
+        if (changes.timer) {
+            this.name = changes.timer.currentValue.name;
+            this.duration = changes.timer.currentValue.duration;
+        }
     }
 
     ngOnDestroy() {
@@ -38,6 +55,12 @@ export class TimerAdminComponent implements OnInit {
     }
 
     start() {
+        this.timer.status === TimerStatus.Stopped
+            ? this.resume()
+            : this.timerHttpService.start(this.timer.id);
+    }
+
+    restart() {
         this.timerHttpService.start(this.timer.id);
     }
 
@@ -46,11 +69,19 @@ export class TimerAdminComponent implements OnInit {
     }
 
     setDuration() {
-        this.timerHttpService.update(this.timer.id, Object.assign(this.timer, {duration: this.duration}))
+        this.timerHttpService.update(this.timer.id, {duration: this.duration})
     }
 
-    isInitial(): boolean {
-        return this.timer.remaining === this.timer.duration;
+    setFinish() {
+        this.timerHttpService.updateFinishAt(this.timer.id, this.finishAt)
+    }
+
+    setName() {
+        this.timerHttpService.update(this.timer.id, {name: this.name})
+    }
+
+    copyTemplate() {
+        this.timerHttpService.copyTemplate(this.timer.id, this.templateId);
     }
 
     showPause(): boolean {
@@ -58,11 +89,11 @@ export class TimerAdminComponent implements OnInit {
     }
 
     showResume(): boolean {
-        return this.timer.status === TimerStatus.Paused || (this.timer.status === TimerStatus.Stopped && !this.isInitial());
+        return this.timer.status === TimerStatus.Paused;
     }
 
     showStart(): boolean {
-        return this.timer.status === TimerStatus.Stopped && this.isInitial();
+        return this.timer.status === TimerStatus.Stopped;
     }
 
     showStop(): boolean {

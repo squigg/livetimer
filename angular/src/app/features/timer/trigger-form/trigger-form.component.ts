@@ -26,4 +26,8 @@ export class TriggerFormComponent implements OnInit {
     deleteTrigger(): void {
         this.delete.emit(this.trigger);
     }
+
+    testSound(sound: string): void {
+        this.triggerService.testSound(sound);
+    }
 }

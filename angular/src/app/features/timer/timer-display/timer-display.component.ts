@@ -38,13 +38,22 @@ export class TimerDisplayComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        const timer = changes.timer ? changes.timer.currentValue : null;
-        if (timer && timer.status === TimerStatus.Started) {
-            this.triggers.forEach((trigger) => this.checkTrigger(trigger, changes.timer.currentValue.remaining));
-        }
+
         if (changes.triggers && changes.triggers.currentValue) {
-            this.triggers.forEach((trigger) => this.triggerService.setTriggerActions(trigger));
+            this.createTriggerActions();
+            this.checkTriggers();
         }
+        if (changes.timer && changes.timer.currentValue) {
+            this.checkTriggers();
+        }
+    }
+
+    createTriggerActions(): void {
+        this.triggers.forEach((trigger) => this.triggerService.setTriggerActions(trigger));
+    }
+
+    checkTriggers(): void {
+        this.triggers.forEach((trigger) => this.checkTrigger(trigger, this.timer.remaining));
     }
 
     checkTrigger(trigger: Trigger, time: number): void {

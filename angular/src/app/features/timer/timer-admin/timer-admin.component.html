@@ -2,18 +2,48 @@
   <app-timer-display [timer]="timer"></app-timer-display>
 </div>
 <div class="timerStatus">State: {{ timer.status }}</div>
-<div class="btn-group mt-3">
-  <button class="btn btn-success" *ngIf="showResume()" type="button" (click)="resume()">Resume</button>
-  <button class="btn btn-primary" *ngIf="showPause()" type="button" (click)="pause()">Pause</button>
-  <button class="btn btn-danger" *ngIf="showStop()" type="button" (click)="stop()">Stop</button>
-  <button class="btn btn-success" *ngIf="showStart()" type="button" (click)="start()">Start</button>
-  <button class="btn btn-warning" *ngIf="!isInitial()" type="button" (click)="start()">Restart</button>
-  <button class="btn btn-secondary" *ngIf="!isInitial()" type="button" (click)="reset()">Reset</button>
-</div>
-<div class="input-group mt-3">
-  <input class="form-control" type="number" size="4" min="1" step="1" name="duration" [(ngModel)]="duration" placeholder="Seconds">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button" (click)="setDuration()">Set Time</button>
+<div class="row justify-content-md-center mt-3">
+  <div class="btn-group btn-group-lg">
+    <button class="btn px-5 btn-lg btn-success" *ngIf="showResume()" type="button" (click)="resume()">Resume</button>
+    <button class="btn px-5 btn-lg btn-primary" *ngIf="showPause()" type="button" (click)="pause()">Pause</button>
+    <button class="btn px-5 btn-lg btn-danger" *ngIf="showStop()" type="button" (click)="stop()">Stop</button>
+    <button class="btn px-5 btn-lg btn-success" *ngIf="showStart()" type="button" (click)="start()">Start</button>
+    <button class="btn px-5 btn-lg btn-warning" type="button" (click)="restart()">Restart</button>
+    <button class="btn px-5 btn-lg btn-secondary" type="button" (click)="reset()">Reset</button>
   </div>
 </div>
+<h3 class="mt-4">'{{ timer.name }}' Configuration</h3>
+<div class="row">
+  <div class="input-group mt-3 col-md-4">
+    <input class="form-control" type="text" [(ngModel)]="name" placeholder="Seconds">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="setName()">Rename</button>
+    </div>
+  </div>
+  <div class="input-group mt-3 col-md-4">
+    <input class="form-control" type="number" size="3" min="1" step="1" name="duration" [(ngModel)]="duration" placeholder="Seconds">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="setDuration()">Set Time</button>
+    </div>
+  </div>
+  <div class="input-group mt-3 col-md-4">
+    <input class="form-control" type="datetime-local" name="duration" [(ngModel)]="finishAt" placeholder="Finish Date">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="setFinish()">Finish At</button>
+    </div>
+  </div>
+</div>
+<h3 class="mt-4">Templates</h3>
+<div class="row">
+  <div class="input-group mt-3 col-lg-4 col-md-6">
+    <select class="form-control" [(ngModel)]="templateId" name="template">
+      <option *ngFor="let option of templateOptions" [ngValue]="option.value">{{option.name}}</option>
+    </select>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="copyTemplate()">Copy Template</button>
+    </div>
+  </div>
+</div>
+
+<h3 class="mt-4">Triggers</h3>
 <app-trigger-admin [triggers]="triggers" [timerId]="timer.id"></app-trigger-admin>

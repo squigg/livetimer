@@ -8,16 +8,19 @@
     </select>
   </div>
   <div class="col-md-auto">
+    <input class="form-control form-control-sm" type="number" min="0" max="999999" [(ngModel)]="trigger.target_time">
+  </div>
+  <div class="col-md-auto">
     <select class="form-control form-control-sm" [(ngModel)]="trigger.action_type" name="action_type">
       <option *ngFor="let option of triggerService.actionOptions" [ngValue]="option.value">{{option.name}}</option>
     </select>
   </div>
   <div class="col-md-auto">
-    <input class="form-control form-control-sm" type="number" min="0" max="999999" [(ngModel)]="trigger.target_time">
-  </div>
-  <div class="col-md-auto">
     <div *ngIf="trigger.action_type === 'play_sound'">
-      <select class="form-control form-control-sm" [(ngModel)]="trigger.action_parameters['sound']" name="action_sound">
+      <button type="button" (click)="testSound(trigger.action_parameters['sound'])" class="btn btn-sm btn-outline-secondary triggerForm--playButton">
+        <i class="fa fa-play"></i>
+      </button>
+      <select class="form-control form-control-sm triggerForm--soundSelect" [(ngModel)]="trigger.action_parameters['sound']" name="action_sound">
         <option *ngFor="let option of triggerService.soundOptions" [ngValue]="option.value">{{option.name}}</option>
       </select>
     </div>
@@ -33,6 +36,7 @@
     </div>
   </div>
   <div class="col-md-auto">
-    <button class="btn btn-sm btn-outline-success" type="button" (click)="saveTrigger(trigger)">Save</button>
+    <button class="btn btn-sm btn-success" type="button" (click)="saveTrigger(trigger)">Save</button>
+    <button *ngIf="trigger.id" class="btn btn-sm btn-outline-danger" type="button" (click)="deleteTrigger(trigger)">Delete</button>
   </div>
 </div>

@@ -29,9 +29,9 @@ export class Timer {
         // copy all fields from `this` to an empty object and return in
         return Object.assign({}, this, {
             // convert fields that need converting
-            now: this.now.toString(),
-            finishAt: this.finishAt.toString(),
-            startedAt: this.startedAt.toString()
+            now: this.now.format(),
+            finish_at: this.finishAt.format(),
+            started_at: this.startedAt.format()
         });
     }
 
@@ -48,8 +48,8 @@ export class Timer {
             return Object.assign(timer, json, {
                 // convert fields that need converting
                 now: moment(json.now),
-                finishAt: moment(json.finishAt),
-                startedAt: moment(json.startedAt)
+                finishAt: moment(json.finish_at),
+                startedAt: moment(json.started_at)
             })
         }
     }
@@ -67,8 +67,19 @@ export interface TimerJSON {
     id: string;
     name: string;
     duration: number;
-    finishAt: string;
-    startedAt: string;
+    finish_at: string;
+    started_at: string;
     now: string;
     status: TimerStatus;
+}
+
+// A representation of Timer's data with variable parameters
+export interface TimerPartial {
+    id?: string;
+    name?: string;
+    duration?: number;
+    finishAt?: string;
+    startedAt?: string;
+    now?: string;
+    status?: TimerStatus;
 }

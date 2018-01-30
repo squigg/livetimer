@@ -28,6 +28,10 @@ export class TimerService {
         return this.timers.get(id);
     }
 
+    public async getTemplates(): Promise<Timer[]> {
+        return this.timerHttp.getTimers();
+    }
+
     private async getTimer(id): Promise<Observable<Timer>> {
         return (await this.timerHttp.connect(id))
             .switchMap(
@@ -61,5 +65,4 @@ export class TimerService {
         this.timerHttp.disconnect(id);
         this.timers.delete(id);
     }
-
 }

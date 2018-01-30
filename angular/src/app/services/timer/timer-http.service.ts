@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { AppSettings } from "../../../config/appsettings.class";
-import { Timer, TimerJSON } from "../../models/timer";
+import { Timer, TimerJSON, TimerPartial } from "../../models/timer";
 import { Observable } from "rxjs/Rx";
 
 import { PusherService } from "../pusher.service";
+import * as moment from "moment";
 
 @Injectable()
 export class TimerHttpService {
@@ -37,8 +38,13 @@ export class TimerHttpService {
         return this.convertJsonTimer(this.http.get<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id, {observe: 'response'}));
     }
 
-    public update(id: string, timer: Timer) {
-        return this.convertJsonTimer(this.http.put<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id, timer, {observe: 'response'}));
+    public update(id: string, data: Object) {
+        return this.convertJsonTimer(this.http.put<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id, data, {observe: 'response'}));
+    }
+
+    public updateFinishAt(id: string, date: Date) {
+        const dateString = moment(date).format();
+        return this.convertJsonTimer(this.http.put<TimerJSON>(AppSettings.API_ROOT + '/timers/' + id, {finish_at: dateString}, {observe: 'response'}));
     }
 
     public delete(id: string) {
@@ -83,6 +89,10 @@ export class TimerHttpService {
 
     public pause(id: string, remaining: number) {
         return this.action(id, 'pause', {remaining: remaining});
+    }
+
+    public copyTemplate(id: string, templateId: string) {
+        return this.action(id, 'template', {template: templateId});
     }
 
     private convertJsonTimer(data$: Observable<Object>): Promise<Timer> {

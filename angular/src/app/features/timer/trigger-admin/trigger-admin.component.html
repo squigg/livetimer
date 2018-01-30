@@ -1,5 +1,7 @@
-<h3 class="mt-3">Triggers</h3>
-<app-trigger-form *ngFor="let trigger of triggers" [trigger]="trigger" (save)="save($event)" (delete)="delete($event)"></app-trigger-form>
+<ng-container *ngFor="let trigger of triggers">
+  <app-trigger-form [trigger]="trigger" (save)="save($event)" (delete)="delete($event)"></app-trigger-form>
+  <hr>
+</ng-container>
 <ng-container *ngIf="createNew; then newForm; else newButton"></ng-container>
 <ng-template #newForm>
   <app-trigger-form [trigger]="newTrigger" (save)="saveNew($event)"></app-trigger-form>

@@ -26,11 +26,13 @@ export class TriggerStyleAction extends TriggerAction {
     }
 
     apply(): void {
+        console.log('applying', this);
         if (!this.applied) this.previousValue = this.el.style.getPropertyValue(this.property);
         this.el.style.setProperty(this.property, this.value);
     }
 
     remove(): void {
+        console.log('removing', this);
         if (this.previousValue) {
             this.el.style.setProperty(this.property, this.previousValue);
         }
