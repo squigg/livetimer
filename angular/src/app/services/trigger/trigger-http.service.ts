@@ -41,7 +41,7 @@ export class TriggerHttpService {
     }
 
     public delete(id: string) {
-        return this.http.delete(AppSettings.API_ROOT + '/triggers/' + id);
+        return this.http.delete(AppSettings.API_ROOT + '/triggers/' + id).subscribe();
     }
 
     public create(timerId: string, trigger: Trigger) {
