@@ -58,4 +58,8 @@ export class TriggerService {
             trigger.action.applied = false;
         }
     }
+
+    testSound(sound: string) {
+        this.howl.play(sound);
+    }
 }
