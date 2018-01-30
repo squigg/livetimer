@@ -18,6 +18,7 @@ $factory->define(App\Timer::class, function (Faker $faker) {
     return [
         'name'      => 'Timer ' . $faker->unique()->randomDigitNotNull,
         'status'    => Timer::STATUS_STOPPED,
+        'type'      => Timer::TYPE_FIXED,
         'duration'  => 35,
         'remaining' => 35,
         'user_id'   => 1,

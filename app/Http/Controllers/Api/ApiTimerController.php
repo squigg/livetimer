@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\TimerResponse;
 use App\Timer;
+use App\Trigger;
 use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -42,51 +43,54 @@ class ApiTimerController extends Controller
         $timer = new Timer($validatedData);
         $timer->user_id = 1;
         $timer->duration = 30;
+        $timer->type = Timer::TYPE_FIXED;
 
         return $this->reset($timer);
     }
 
     public function update(Timer $timer, Request $request)
     {
-        $duration = $timer->duration;
         $validatedData = $this->validate($request, [
-            'name'     => 'sometimes|required|string',
-            'duration' => 'sometimes|required|numeric',
+            'name'      => 'sometimes|required|string',
+            'duration'  => 'sometimes|required|numeric',
+            'finish_at' => 'sometimes|required|date_format:' . \DateTime::ATOM,
         ]);
+
         $timer->fill($validatedData);
-        if ($timer->duration !== $duration) {
+
+        if ($timer->isDirty('duration')) {
+            $timer->type = Timer::TYPE_FIXED;
+            $timer->finish_at = null;
             return $this->reset($timer);
         }
+
+        if ($timer->isDirty('finish_at')) {
+            $timer->type = Timer::TYPE_COUNTDOWN;
+            $timer->duration = 0;
+            return $this->reset($timer);
+        }
+
         $timer->save();
         return new TimerResponse($timer);
     }
 
     public function start(Timer $timer)
     {
-        $timer->status = Timer::STATUS_STARTED;
-        $timer->remaining = $timer->duration;
-        $timer->started_at = Carbon::now();
-        $timer->finish_at = Carbon::now()->addSeconds($timer->duration);
+        $timer->calculate()->start();
         $timer->save();
         return new TimerResponse($timer);
     }
 
     public function reset(Timer $timer)
     {
-        $timer->status = Timer::STATUS_STOPPED;
-        $timer->remaining = $timer->duration;
-        $timer->started_at = null;
-        $timer->finish_at = null;
+        $timer->calculate()->reset();
         $timer->save();
         return new TimerResponse($timer);
     }
 
     public function complete(Timer $timer)
     {
-        $timer->status = Timer::STATUS_COMPLETE;
-        $timer->remaining = 0;
-        $timer->started_at = null;
-        $timer->finish_at = null;
+        $timer->calculate()->complete();
         $timer->save();
         return new TimerResponse($timer);
     }
@@ -96,9 +100,7 @@ class ApiTimerController extends Controller
         $validatedData = $this->validate($request, [
             'remaining' => 'required|numeric|max:' . $timer->duration
         ]);
-        $timer->status = Timer::STATUS_STOPPED;
-        $timer->finish_at = null;
-        $timer->remaining = $validatedData['remaining'];
+        $timer->calculate()->stop($validatedData['remaining']);
         $timer->save();
         return new TimerResponse($timer);
     }
@@ -108,17 +110,14 @@ class ApiTimerController extends Controller
         $validatedData = $this->validate($request, [
             'remaining' => 'required|numeric|max:' . $timer->duration
         ]);
-        $timer->status = Timer::STATUS_PAUSED;
-        $timer->finish_at = null;
-        $timer->remaining = $validatedData['remaining'];
+        $timer->calculate()->pause($validatedData['remaining']);
         $timer->save();
         return new TimerResponse($timer);
     }
 
     public function resume(Timer $timer)
     {
-        $timer->status = Timer::STATUS_STARTED;
-        $timer->finish_at = Carbon::now()->addSeconds($timer->remaining);
+        $timer->calculate()->resume();
         $timer->save();
         return new TimerResponse($timer);
     }
@@ -130,4 +129,29 @@ class ApiTimerController extends Controller
         return response(null, 200);
     }
 
+    public function template(Timer $timer, Request $request)
+    {
+        $validatedData = $this->validate($request, [
+            'template' => 'required|string|exists:timers,uuid'
+        ]);
+
+        $template = Timer::Uuid($validatedData['template']);
+        $data = collect($template->toArray())->only(['duration', 'finish_at', 'type'])->toArray();
+        $timer->fill($data);
+        $timer->save();
+
+        $this->copyTriggers($template, $timer);
+
+        return new TimerResponse($timer);
+    }
+
+    protected function copyTriggers(Timer $source, Timer $dest)
+    {
+        $triggers = $source->triggers;
+        $dest->triggers()->delete();
+        $triggers->each(function (Trigger $trigger) use ($dest) {
+            $dest->triggers()->save($trigger->replicate());
+        });
+        return $dest;
+    }
 }

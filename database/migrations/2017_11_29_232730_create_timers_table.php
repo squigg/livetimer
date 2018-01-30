@@ -19,6 +19,7 @@ class CreateTimersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->uuid('uuid');
             $table->string('name');
+            $table->string('type');
             $table->string('status');
             $table->integer('duration');
             $table->integer('remaining');
