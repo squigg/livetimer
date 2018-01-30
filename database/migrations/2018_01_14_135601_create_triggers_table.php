@@ -18,9 +18,9 @@ class CreateTriggersTable extends Migration
             $table->increments('id');
             $table->uuid('uuid');
             $table->unsignedInteger('timer_id');
-            $table->integer('target_time');
             $table->string('name')->nullable();
             $table->string('compare_type');
+            $table->integer('target_time');
             $table->longText('action_type');
             $table->string('action_parameters')->nullable();
             $table->boolean('enabled')->default(true);
