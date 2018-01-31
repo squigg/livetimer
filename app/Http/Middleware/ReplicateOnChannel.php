@@ -42,7 +42,7 @@ class ReplicateOnChannel
     protected function replicateTimer(Request $request)
     {
         $timer = $this->getTimer($request);
-        $timerData = (new TimerResponse($timer))->transform()->toArray();
+        $timerData = (new TimerResponse($timer))->transform();
         event(new TimerUpdated($timerData));
     }
 

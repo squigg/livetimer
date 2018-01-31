@@ -35,7 +35,7 @@ class BaseResponse implements Responsable
     }
 
     /**
-     * @return Jsonable|Arrayable
+     * @return Jsonable|Arrayable|array
      */
     public function transform()
     {
