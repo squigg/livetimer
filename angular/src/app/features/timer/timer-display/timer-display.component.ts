@@ -34,7 +34,8 @@ export class TimerDisplayComponent implements OnInit, OnChanges {
     }
 
     getShowHours(): boolean {
-        return this.timer ? this.timer.duration > (60 * 60) : false;
+        if (!this.timer) return false;
+        return this.timer.duration > (60 * 60) || this.timer.remaining > (60 * 60);
     }
 
     ngOnChanges(changes: SimpleChanges) {
