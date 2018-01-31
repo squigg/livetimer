@@ -23,11 +23,12 @@ export class ClockComponent implements OnInit {
             if (this.showHours) {
                 this.hours = Math.floor(time / (60 * 60));
                 this.minutes = Math.floor(time / 60) - this.hours * 60;
+                this.seconds = Math.floor(time) - this.minutes * 60 - this.hours * 60 * 60;
             }
             else {
                 this.minutes = Math.floor(time / 60);
+                this.seconds = Math.floor(time) - this.minutes * 60;
             }
-            this.seconds = Math.floor(time) - this.minutes * 60;
         }
     }
 
