@@ -1,4 +1,4 @@
-interface IAudioPlayer {
+export interface AudioPlayer {
     play(sound: string);
 
     stop(sound: string);
@@ -26,13 +26,11 @@ export class TriggerStyleAction extends TriggerAction {
     }
 
     apply(): void {
-        console.log('applying', this);
         if (!this.applied) this.previousValue = this.el.style.getPropertyValue(this.property);
         this.el.style.setProperty(this.property, this.value);
     }
 
     remove(): void {
-        console.log('removing', this);
         if (this.previousValue) {
             this.el.style.setProperty(this.property, this.previousValue);
         }
@@ -44,7 +42,7 @@ export class TriggerStyleAction extends TriggerAction {
 
 export class TriggerSoundAction extends TriggerAction {
 
-    constructor(public sound: string, public repeat = 1, public player: IAudioPlayer) {
+    constructor(public sound: string, public repeat = 1, public player: AudioPlayer) {
         super();
     }
 
