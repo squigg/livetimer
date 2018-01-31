@@ -40,4 +40,9 @@ class Trigger extends Model
     {
         return 'uuid';
     }
+
+    protected function getDateFormat()
+    {
+        return \DateTime::ATOM;
+    }
 }
