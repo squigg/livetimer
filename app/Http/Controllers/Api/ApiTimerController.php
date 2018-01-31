@@ -142,7 +142,7 @@ class ApiTimerController extends Controller
 
         $this->copyTriggers($template, $timer);
 
-        return new TimerResponse($timer);
+        return $this->reset($timer);
     }
 
     protected function copyTriggers(Timer $source, Timer $dest)
