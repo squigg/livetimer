@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Timer;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -21,11 +20,11 @@ class TimerUpdated implements ShouldBroadcastNow
     /**
      * Create a new event instance.
      *
-     * @param Timer $timer
+     * @param array $timerData
      */
-    public function __construct($timer)
+    public function __construct($timerData)
     {
-        $this->timer = $timer;
+        $this->timer = $timerData;
     }
 
     /**
@@ -35,7 +34,7 @@ class TimerUpdated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('App.Timer.' . $this->timer->uuid);
+        return new Channel('App.Timer.' . $this->timer['id']);
     }
 
 }

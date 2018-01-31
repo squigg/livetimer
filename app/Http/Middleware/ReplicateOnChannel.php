@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Events\TimerUpdated;
 use App\Events\TriggerUpdated;
+use App\Http\Responses\TimerResponse;
 use App\Http\Responses\TriggerResponse;
 use Closure;
 use Illuminate\Http\Request;
@@ -40,9 +41,9 @@ class ReplicateOnChannel
 
     protected function replicateTimer(Request $request)
     {
-        //event(new TimerUpdated(json_decode($timerData, true)));
         $timer = $this->getTimer($request);
-        event(new TimerUpdated($timer));
+        $timerData = (new TimerResponse($timer))->transform()->toArray();
+        event(new TimerUpdated($timerData));
     }
 
     protected function replicateTrigger(Request $request)
