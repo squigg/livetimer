@@ -24,6 +24,9 @@ export class TriggerService {
     }
 
     shouldBeApplied(trigger: Trigger, time: number): boolean {
+
+        if (!this.rootElement) return false;
+
         if (trigger.compare_type === TriggerCompareType.Exactly) {
             return time === trigger.target_time;
         }
@@ -49,14 +52,14 @@ export class TriggerService {
 
     applyTrigger(trigger: Trigger): void {
         trigger.action.apply();
-        trigger.action.applied = true;
+        // trigger.action.applied = true;
     }
 
     removeTrigger(trigger: Trigger): void {
-        if (trigger.action.applied) {
+        // if (trigger.action.applied) {
             trigger.action.remove();
-            trigger.action.applied = false;
-        }
+        // trigger.action.applied = false;
+        // }
     }
 
     testSound(sound: string) {

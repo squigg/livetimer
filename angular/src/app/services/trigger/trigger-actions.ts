@@ -19,24 +19,24 @@ export abstract class TriggerAction {
 
 export class TriggerStyleAction extends TriggerAction {
 
-    private previousValue;
+    // private previousValue;
 
     constructor(public property: string, public value: string, public el: HTMLElement) {
         super();
     }
 
     apply(): void {
-        if (!this.applied) this.previousValue = this.el.style.getPropertyValue(this.property);
+        // if (!this.applied) this.previousValue = this.el.style.getPropertyValue(this.property);
         this.el.style.setProperty(this.property, this.value);
     }
 
     remove(): void {
-        if (this.previousValue) {
-            this.el.style.setProperty(this.property, this.previousValue);
-        }
-        else {
-            this.el.style.removeProperty(this.property);
-        }
+        // if (this.previousValue) {
+        //     this.el.style.setProperty(this.property, this.previousValue);
+        // }
+        // else {
+        this.el.style.removeProperty(this.property);
+        // }
     }
 }
 
