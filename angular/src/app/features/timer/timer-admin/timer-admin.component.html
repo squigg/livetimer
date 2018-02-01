@@ -20,13 +20,13 @@
       <button class="btn btn-outline-secondary" type="button" (click)="setName()">Rename</button>
     </div>
   </div>
-  <div class="input-group mt-3 col-md-4">
+  <div class="input-group mt-3 col-md-3">
     <input class="form-control" type="number" size="3" min="1" step="1" name="duration" [(ngModel)]="duration" placeholder="Seconds">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" (click)="setDuration()">Set Time</button>
     </div>
   </div>
-  <div class="input-group mt-3 col-md-4">
+  <div class="input-group mt-3 col-md-5">
     <input class="form-control" type="datetime-local" name="duration" [(ngModel)]="finishAt" placeholder="Finish Date">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" (click)="setFinish()">Finish At</button>
