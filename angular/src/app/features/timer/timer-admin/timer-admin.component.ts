@@ -30,12 +30,13 @@ export class TimerAdminComponent implements OnInit {
     }
 
     ngOnChanges(changes: SimpleChanges) {
+
         if (changes.templates) {
-            this.templateOptions = changes.templates.currentValue.map((t) => new SelectOption(t.name, t.id));
+            this.templateOptions = this.templates.map((t) => new SelectOption(t.name, t.id));
         }
-        if (changes.timer) {
-            this.name = changes.timer.currentValue.name;
-            this.duration = changes.timer.currentValue.duration;
+        if (changes.timer && changes.timer.currentValue.status !== TimerStatus.Started) {
+            this.name = this.timer.name;
+            this.duration = this.timer.duration;
         }
     }
 
