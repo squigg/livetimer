@@ -1,22 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { AppSettings } from "../../../config/appsettings.class";
-import { Timer, TimerJSON, TimerPartial } from "../../models/timer";
+import { Timer, TimerJSON } from "../../models/timer";
 import { Observable } from "rxjs/Rx";
 
 import { PusherService } from "../pusher.service";
 import * as moment from "moment";
+import { Subject } from "rxjs/Subject";
 
 @Injectable()
 export class TimerHttpService {
+
+    protected subjects = new Map<string, Subject<Timer>>();
 
     constructor(private http: HttpClient, private pusherService: PusherService) {
     }
 
     public async connect(id: string): Promise<Observable<Timer>> {
 
+        this.subjects.set(id, new Subject<Timer>());
         return Observable.of(await this.get(id))
-            .concat(this.subscribeToPusher(id));
+            .concat(this.subscribeToPusher(id))
+            .merge(this.subjects.get(id));
+    }
+
+    public async refresh(id: string): Promise<void> {
+        this.subjects.get(id).next(await this.get(id));
     }
 
     private subscribeToPusher(id): Observable<Timer> {

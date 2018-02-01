@@ -22,6 +22,7 @@ export class TimerService {
 
     public async connect(id: string): Promise<Observable<Timer>> {
         if (this.timers.has(id)) {
+            this.timerHttp.refresh(id);
             return this.timers.get(id);
         }
         this.timers.set(id, await this.getTimer(id));
