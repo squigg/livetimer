@@ -67,13 +67,12 @@ export class TimerDisplayComponent implements OnInit, OnChanges {
 
     checkTriggers(): void {
         if (this.triggersAreValid()) {
-            this.triggers.forEach((trigger) => this.checkTrigger(trigger, this.timer.remaining));
+            this.triggers.forEach((trigger) => this.checkTrigger(trigger, this.timer.remaining, this.timer.status === TimerStatus.Complete));
         }
     }
 
-    checkTrigger(trigger: Trigger, time: number): void {
-        this.triggerService.shouldBeApplied(trigger, time) ? this.triggerService.applyTrigger(trigger) : this.triggerService.removeTrigger(trigger);
+    checkTrigger(trigger: Trigger, time: number, complete: boolean): void {
+        this.triggerService.shouldBeApplied(trigger, time) ? this.triggerService.applyTrigger(trigger, complete) : this.triggerService.removeTrigger(trigger);
     }
-
 
 }

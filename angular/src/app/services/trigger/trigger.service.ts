@@ -50,7 +50,10 @@ export class TriggerService {
         return trigger;
     }
 
-    applyTrigger(trigger: Trigger): void {
+    applyTrigger(trigger: Trigger, complete: boolean): void {
+
+        if (complete && trigger.action_type == TriggerActionType.PlaySound) return;
+
         trigger.action.apply();
         // trigger.action.applied = true;
     }
