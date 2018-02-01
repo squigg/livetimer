@@ -1,42 +1,45 @@
-<div class="mt-2 row">
-  <div class="col-md-auto">
-    <input class="form-control form-control-sm" type="text" [(ngModel)]="trigger.name" placeholder="Name">
-  </div>
-  <div class="col-md-auto">
-    <select class="form-control form-control-sm" [(ngModel)]="trigger.compare_type" name="compare_type">
-      <option *ngFor="let option of triggerService.compareOptions" [ngValue]="option.value">{{option.name}}</option>
-    </select>
-  </div>
-  <div class="col-md-auto">
-    <input class="form-control form-control-sm" type="number" min="0" max="999999" [(ngModel)]="trigger.target_time">
-  </div>
-  <div class="col-md-auto">
-    <select class="form-control form-control-sm" [(ngModel)]="trigger.action_type" name="action_type">
-      <option *ngFor="let option of triggerService.actionOptions" [ngValue]="option.value">{{option.name}}</option>
-    </select>
-  </div>
-  <div class="col-md-auto">
-    <div *ngIf="trigger.action_type === 'play_sound'">
-      <button type="button" (click)="testSound(trigger.action_parameters['sound'])" class="btn btn-sm btn-outline-secondary triggerForm--playButton">
-        <i class="fa fa-play"></i>
-      </button>
-      <select class="form-control form-control-sm triggerForm--soundSelect" [(ngModel)]="trigger.action_parameters['sound']" name="action_sound">
-        <option *ngFor="let option of triggerService.soundOptions" [ngValue]="option.value">{{option.name}}</option>
+<form #triggerForm="ngForm">
+  <div class="mt-2 row">
+    <div class="col-sm-4 col-lg-auto">
+      <input class="form-control form-control-sm" type="text" [(ngModel)]="trigger.name" placeholder="Name" name="name">
+    </div>
+    <div class="col-sm-4 col-lg-auto">
+      <select class="form-control form-control-sm" [(ngModel)]="trigger.compare_type" name="compare_type">
+        <option *ngFor="let option of triggerService.compareOptions" [ngValue]="option.value">{{option.name}}</option>
       </select>
     </div>
-    <div *ngIf="trigger.action_type === 'change_style'">
-      <input class="form-control form-control-sm" type="text" [(ngModel)]="trigger.action_parameters['property']" placeholder="Property">
-      <input class="form-control form-control-sm" type="text" [(ngModel)]="trigger.action_parameters['value']" placeholder="Value">
+    <div class="col-sm-2 col-lg-1">
+      <input class="form-control form-control-sm" size="2" type="number" min="0" max="999999" [(ngModel)]="trigger.target_time" name="target_time">
+    </div>
+    <div class="w-100 d-block d-lg-none my-1"></div>
+    <div class="col-sm-4 col-lg-auto">
+      <select class="form-control form-control-sm" [(ngModel)]="trigger.action_type" name="action_type">
+        <option *ngFor="let option of triggerService.actionOptions" [ngValue]="option.value">{{option.name}}</option>
+      </select>
+    </div>
+    <div class="col-sm-4 col-lg-auto">
+      <div *ngIf="trigger.action_type === 'play_sound'">
+        <button type="button" (click)="testSound(trigger.action_parameters['sound'])" class="btn btn-sm btn-outline-secondary triggerForm--playButton">
+          <i class="fa fa-play"></i>
+        </button>
+        <select class="form-control form-control-sm triggerForm--soundSelect" [(ngModel)]="trigger.action_parameters['sound']" name="action_sound">
+          <option *ngFor="let option of triggerService.soundOptions" [ngValue]="option.value">{{option.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="trigger.action_type === 'change_style'">
+        <input class="form-control form-control-sm" type="text" [(ngModel)]="trigger.action_parameters['property']" placeholder="Property" name="action_property">
+        <input class="form-control form-control-sm" type="text" [(ngModel)]="trigger.action_parameters['value']" placeholder="Value" name="action_value">
+      </div>
+    </div>
+    <div class="col-sm-2 col-lg-auto">
+      <div class="form-check">
+        <input class="form-check-input" id="{{ 'enabled' + trigger.id}}" type="checkbox" [(ngModel)]="trigger.enabled" name="enabled">
+        <label class="form-check-label" for="{{ 'enabled' + trigger.id}}">Enabled</label>
+      </div>
+    </div>
+    <div class="col-sm-2 col-lg-auto">
+      <button *ngIf="triggerForm.form.dirty" class="btn btn-sm btn-success" type="button" (click)="saveTrigger()">Save</button>
+      <button *ngIf="trigger.id" class="btn btn-sm btn-outline-danger" type="button" (click)="deleteTrigger()">Delete</button>
     </div>
   </div>
-  <div class="col-md-auto">
-    <div class="form-check">
-      <input class="form-check-input" id="{{ 'enabled' + trigger.id}}" type="checkbox" [(ngModel)]="trigger.enabled">
-      <label class="form-check-label" for="{{ 'enabled' + trigger.id}}">Enabled</label>
-    </div>
-  </div>
-  <div class="col-md-auto">
-    <button class="btn btn-sm btn-success" type="button" (click)="saveTrigger()">Save</button>
-    <button *ngIf="trigger.id" class="btn btn-sm btn-outline-danger" type="button" (click)="deleteTrigger()">Delete</button>
-  </div>
-</div>
+</form>
