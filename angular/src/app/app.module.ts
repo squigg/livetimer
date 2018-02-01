@@ -14,6 +14,7 @@ import { TimerAdminPageComponent } from "./features/pages/timer-admin/timer-admi
 import { PageNotFoundComponent } from "./features/pages/page-not-found/page-not-found.component";
 
 const appRoutes: Routes = [
+    {path: '', redirectTo: 'timers', pathMatch: 'full'},
     {path: 'timers', component: TimerListPageComponent},
     {path: 'timer/:id/admin', component: TimerAdminPageComponent},
     {path: 'timer/:id', component: TimerShowPageComponent},
