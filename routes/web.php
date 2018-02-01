@@ -16,4 +16,4 @@ Route::get('/', function () {
 });
 Route::any('{catchall}', function () {
     return view('home');
-})->where('catchall', '(.*)');
+})->where('catchall', '(timer.*)');
