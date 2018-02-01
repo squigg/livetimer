@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChi
 import { Timer, TimerStatus } from "../../../models/timer";
 import { Trigger } from "../../../models/trigger";
 import { TriggerService } from "../../../services/trigger/trigger.service";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Component({
     selector: 'app-timer-display',
@@ -14,15 +15,17 @@ export class TimerDisplayComponent implements OnInit, OnChanges {
     @Input() triggers: Trigger[] = [];
     @ViewChild('clockWrapper') clockWrapper: ElementRef;
 
+    private initialised$ = new BehaviorSubject<boolean>(false);
+
     constructor(private triggerService: TriggerService) {
     }
 
     ngOnInit() {
-
     }
 
     ngAfterViewInit() {
         this.triggerService.registerHtmlElement(this.clockWrapper.nativeElement);
+        this.initialised$.next(true);
     }
 
     getRemaining(): number {
@@ -40,21 +43,32 @@ export class TimerDisplayComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
 
-        if (changes.triggers && changes.triggers.currentValue) {
-            this.createTriggerActions();
-            this.checkTriggers();
+        if (changes.triggers) {
+            this.initialised$.filter((v) => v).take(1).subscribe((v) => {
+                this.createTriggerActions();
+                this.checkTriggers();
+            });
         }
+
         if (changes.timer && changes.timer.currentValue) {
             this.checkTriggers();
         }
     }
 
+    triggersAreValid(): boolean {
+        return this.triggers && this.triggers.constructor === Array;
+    }
+
     createTriggerActions(): void {
-        this.triggers.forEach((trigger) => this.triggerService.setTriggerActions(trigger));
+        if (this.triggersAreValid()) {
+            this.triggers.forEach((trigger) => this.triggerService.setTriggerActions(trigger));
+        }
     }
 
     checkTriggers(): void {
-        this.triggers.forEach((trigger) => this.checkTrigger(trigger, this.timer.remaining));
+        if (this.triggersAreValid()) {
+            this.triggers.forEach((trigger) => this.checkTrigger(trigger, this.timer.remaining));
+        }
     }
 
     checkTrigger(trigger: Trigger, time: number): void {
