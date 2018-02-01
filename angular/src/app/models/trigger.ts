@@ -44,6 +44,7 @@ export class Trigger {
             // copy all the fields from the json object
             return Object.assign(trigger, json, {
                 // convert fields that need converting
+                target_time: parseInt(json.target_time as string),
             })
         }
     }
@@ -60,7 +61,7 @@ export class Trigger {
 export interface TriggerJSON {
     id: string;
     name: string;
-    target_time: number;
+    target_time: number | string;
     compare_type: TriggerCompareType;
     action_type: TriggerActionType;
     action_parameters: TriggerActionParam;

@@ -49,7 +49,9 @@ export class Timer {
                 // convert fields that need converting
                 now: moment(json.now),
                 finishAt: moment(json.finish_at),
-                startedAt: moment(json.started_at)
+                startedAt: moment(json.started_at),
+                duration: parseInt(json.duration as string),
+                remaining: parseInt(json.remaining as string),
             })
         }
     }
@@ -66,7 +68,8 @@ export class Timer {
 export interface TimerJSON {
     id: string;
     name: string;
-    duration: number;
+    duration: number | string;
+    remaining: number | string;
     finish_at: string;
     started_at: string;
     now: string;
@@ -78,6 +81,7 @@ export interface TimerPartial {
     id?: string;
     name?: string;
     duration?: number;
+    remaining?: number;
     finishAt?: string;
     startedAt?: string;
     now?: string;
