@@ -1,11 +1,14 @@
-<ul>
-  <li *ngFor="let timer of timers">
-    <a routerLink="/timer/{{ timer.id }}">
-      {{ timer.name }} - {{ timer.duration }} seconds
-    </a>
-  </li>
+<ul class="list-group mt-3">
+  <a routerLink="/timer/{{ timer.id }}" *ngFor="let timer of timers" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    {{ timer.name }} ({{ timer.duration }} seconds)
+    <a routerLink="/timer/{{ timer.id }}/admin"><i class="fa fa-cog"></i></a>
+  </a>
 </ul>
-<input type="text" [(ngModel)]="name" name="name" id="name" placeholder="Timer Name">
-<a (click)="createTimer()">
-  <button type="button">New Timer</button>
-</a>
+<div class="row">
+  <div class="input-group mt-3 col-4">
+    <input class="form-control" type="text" [(ngModel)]="name" name="name" id="name" placeholder="Timer Name">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="createTimer()">New Timer</button>
+    </div>
+  </div>
+</div>
