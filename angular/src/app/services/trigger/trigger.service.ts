@@ -38,6 +38,10 @@ export class TriggerService {
         }
     }
 
+    removeDuplicates(triggersToAdd: Trigger[], triggersToRemove: Trigger[]): Trigger[] {
+        return triggersToRemove.filter((t) => triggersToAdd.every((ti) => ti.action_parameters.property !== t.action_parameters.property));
+    }
+
     setTriggerActions(trigger: Trigger): Trigger {
         let action: TriggerAction;
         if (trigger.action_type === TriggerActionType.PlaySound) {
@@ -60,12 +64,25 @@ export class TriggerService {
 
     removeTrigger(trigger: Trigger): void {
         // if (trigger.action.applied) {
-            trigger.action.remove();
+        trigger.action.remove();
         // trigger.action.applied = false;
         // }
     }
 
     testSound(sound: string) {
         this.howl.play(sound);
+    }
+
+    sortTriggers(triggersToAdd: Trigger[]) {
+        triggersToAdd = triggersToAdd.sort((a, b) => {
+            if (a.compare_type === b.compare_type) return 0;
+            return a.compare_type === TriggerCompareType.Exactly ? 1 : -1;
+        });
+        triggersToAdd = triggersToAdd.sort((a, b) => {
+            if (a.target_time === b.target_time) return 0;
+            return a.target_time < b.target_time ? 1 : -1;
+        });
+        console.log('triggers', triggersToAdd);
+        return triggersToAdd;
     }
 }
