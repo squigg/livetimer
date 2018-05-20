@@ -8,10 +8,7 @@ Built with PHP/Laravel providing the back-end API and pushing real-time updates 
 
 Features include timer control, templated timers, sound/colour effects.
 
-It communicates via JSON API to the front-end, a custom API to the phone app, and uses Pusher service
-for mobile phone notifications.
-
-Code works and is used for my home video surveillance (watching cats), but is not perfect / fully tested etc.
+Code works and was successfully used at the Hackathon for controlling timings for final pitch and judges questions, but is not perfect / fully tested etc.
 
 ## TODO
 - Better error handling for websocket failures
